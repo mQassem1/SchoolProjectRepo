@@ -14,7 +14,8 @@ namespace SchoolProject.Controllers
         private readonly ILogger<HomeController> logger;
         private readonly IStudentRepository studentRepository;
 
-        public HomeController(ILogger<HomeController> logger,IStudentRepository studentRepository)
+        public HomeController(ILogger<HomeController> logger,
+                              IStudentRepository studentRepository)
         {
             this.logger = logger;
             this.studentRepository = studentRepository;

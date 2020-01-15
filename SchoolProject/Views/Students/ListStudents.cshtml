@@ -1,0 +1,92 @@
+﻿@model IEnumerable<StudentIndexViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    //   Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Fname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhotoPath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Level)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    
+                    @Html.DisplayFor(modelItem => item.Fname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhotoPath)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Level)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department)
+
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.StudentId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.StudentId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.StudentId">Delete</a>
+                </td>
+            </tr>
+
+            foreach (var course in item.Courses)
+            {
+                <tr>
+                <td>
+                    
+                    @Html.DisplayFor(modelItem => course.CourseId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => course.CourseName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => course.CourseCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => course.CourseGPA)
+                </td>
+                    </tr>
+            }
+
+
+        }
+    </tbody>
+</table>
+

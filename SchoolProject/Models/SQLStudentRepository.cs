@@ -58,32 +58,33 @@ namespace SchoolProject.Models
 
         public List<StudentCourse> GetStudentCourses(int id)
         {
-            var st = new List<StudentCourse>();
-            var result =  from s in context.Students
-                          join sc in context.StudentCourseRelations
-                          on s.StudentId equals sc.StudentId
-                          join c in context.Courses
-                          on sc.CourseId equals c.CourseId
-                          where(s.StudentId==id)
-                          select (x=> new StudentCourse
-                          {
-                              CourseId = c.CourseId,
-                              CourseCode = c.Code,
-                              CourseName = c.Name,
-                              CourseGPA = sc.GPA
-                          });
+            //var result = from s in context.Students
+            //             join sc in context.StudentCourseRelations
+            //             on s.StudentId equals sc.StudentId
+            //             join c in context.Courses
+            //             on sc.CourseId equals c.CourseId
+            //             where (s.StudentId == id)
+            //             select (new StudentCourse
+            //             {
+            //                 CourseId = c.CourseId,
+            //                 CourseCode = c.Code,
+            //                 CourseName = c.Name,
+            //                 CourseGPA = sc.GPA
+            //             });
 
-            foreach(var x in result)
+            //return result.ToList();
+
+            var result = context.StudentCourseRelations.Where(x => x.StudentId == id).Select(e => new StudentCourse
             {
-                StudentCourse courses = new StudentCourse
-                {
-                    x.CourseId=courses.CourseId,
-                    x.CourseCode=courses.CourseCode,
-                    x.CourseName=courses.CourseName,
-                    x.CourseGPA=courses.
+                CourseCode = e.Course.Code,
+                CourseId = e.Course.CourseId,
+                CourseGPA = e.GPA,
+                CourseName = e.Course.Name
 
-                };
-            }
+
+            }).ToList();
+
+            return result;
         }
 
 

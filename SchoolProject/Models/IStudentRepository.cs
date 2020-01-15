@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SchoolProject.Models;
+using static SchoolProject.Models.SQLStudentRepository;
 
 namespace SchoolProject.Models
 {
     public interface IStudentRepository
     {
-        Student Create(Student Student);
+        Student Create(Student student);
         IEnumerable<Student> GetAllStudents();
-        Student GetStudentById(int Id);
-        Student GetStudentByEmail(string Email);
-        Student DeleteStudent(int Id);
-        Student UpdateStudent(Student StudentChanges);
+        Student GetStudentById(int id);
+        Student GetStudentByEmail(string email);
+        Student DeleteStudent(int id);
+        Student UpdateStudent(Student studentChanges);
+        List<StudentCourse> GetStudentCourses(int id);
     }
 }

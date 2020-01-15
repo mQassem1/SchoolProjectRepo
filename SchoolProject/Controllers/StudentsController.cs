@@ -16,36 +16,40 @@ namespace SchoolProject.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IStudentRepository studentRepository;
        
-        public StudentsController(ApplicationDbContext context, IStudentRepository studentRepository)
+        public StudentsController(ApplicationDbContext context,
+                                  IStudentRepository studentRepository)
         {
             _context = context;
             this.studentRepository = studentRepository;
             
         }
 
-        // GET: Students
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult ListStudents()
         {
             List<Student> Allstudents = studentRepository.GetAllStudents().ToList();
 
             var model = new List<StudentIndexViewModel>();
-            
-            foreach(var student in Allstudents)
+           
+            foreach (var student in Allstudents)
             {
                 StudentIndexViewModel studentIndexViewModel = new StudentIndexViewModel()
                 {
                     StudentId = student.StudentId,
                     Fname=student.Fname,
                     Lname=student.Lname,
+                    Email=student.Email,
                     Level=student.Level.LevelName.ToString(),
                     Department=student.Department.DepartmentName.ToString(),
                     PhotoPath=student.PhotoPath
                 };
+
+              studentIndexViewModel.Courses = studentRepository.GetStudentCourses(student.StudentId).ToList();
+                
                 model.Add(studentIndexViewModel);
             }
 
             return View(model);
-
         }
 
         // GET: Students/Details/5
