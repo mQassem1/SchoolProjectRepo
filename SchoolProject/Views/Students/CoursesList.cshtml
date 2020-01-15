@@ -1,0 +1,78 @@
+﻿@model List<SchoolProject.Models.SQLStudentRepository.StudentCourse>
+
+@{
+    ViewBag.Title = "Course Details";
+}
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <p> Course Id</p>
+                </th>
+                <th>
+                    <p> Course Name</p>
+                </th>
+                <th>
+                    <p> Course Code </p>
+                </th>
+                <th>
+                    <p> Course Code </p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+
+                        @Html.DisplayFor(modelItem => item.CourseId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseGPA)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="">Edit</a>
+
+
+                    </td>
+                </tr>
+
+
+
+
+            }
+        </tbody>
+    </table>
+
+
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <p> Course Id</p>
+                </th>
+                <th>
+                    <p> Course Name</p>
+                </th>
+                <th>
+                    <p> Course Code </p>
+                </th>
+                <th>
+                    <p> Course Code </p>
+                </th>
+            </tr>
+        </thead>
+        </table>
+        }

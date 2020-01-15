@@ -15,6 +15,7 @@
     <thead>
         <tr>
             <th>
+
                 @Html.DisplayNameFor(model => model.Fname)
             </th>
             <th>
@@ -62,28 +63,12 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.StudentId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.StudentId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.StudentId">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.StudentId">Delete</a> |
+                    <a asp-action="CoursesList" asp-route-id="@item.StudentId">Courses</a>
                 </td>
             </tr>
 
-            foreach (var course in item.Courses)
-            {
-                <tr>
-                <td>
-                    
-                    @Html.DisplayFor(modelItem => course.CourseId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => course.CourseName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => course.CourseCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => course.CourseGPA)
-                </td>
-                    </tr>
-            }
+           
 
 
         }

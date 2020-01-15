@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Data;
 using SchoolProject.Models;
 using SchoolProject.ViewModels;
+using static SchoolProject.Models.SQLStudentRepository;
 
 namespace SchoolProject.Controllers
 {
@@ -51,6 +53,24 @@ namespace SchoolProject.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult CoursesList(int id)
+        {
+            if(id !=0)
+            {
+                List<StudentCourse> Courses = studentRepository.GetStudentCourses(id).ToList();
+
+                return View(Courses);
+            }
+            else
+            {
+                return View("NotFound");
+            }
+          
+        }
+            
 
         // GET: Students/Details/5
         public async Task<IActionResult> Details(int? id)
