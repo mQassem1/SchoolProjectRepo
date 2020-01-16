@@ -73,6 +73,9 @@ namespace SchoolProject.Models
             //             });
 
             //return result.ToList();
+            //SelectMany get the subList of a list 
+          //  var t = context.Departments.SelectMany(x => x.Students);
+
 
             var result = context.StudentCourseRelations.Where(x => x.StudentId == id).Select(e => new StudentCourse
             {
