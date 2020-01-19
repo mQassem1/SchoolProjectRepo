@@ -24,7 +24,7 @@ namespace SchoolProject.Models
         public Address AddAddress(Address address)
         {
             context.Addresses.Add(address);
-            logger.LogInformation("Add Address Sccessued");
+            logger.LogInformation("Add Address Successeded");
             context.SaveChanges();
             return address;
         }

@@ -17,10 +17,12 @@ namespace SchoolProject.Models
         public string PhotoPath { get; set; }
 
         public int LevelId { get; set; }
+
         [ForeignKey(nameof(LevelId))]
         public Level Level { get; set; }
 
         public int DepartmentId { get; set; }
+
         [ForeignKey(nameof(DepartmentId))]
         public Department Department { get; set; }
 

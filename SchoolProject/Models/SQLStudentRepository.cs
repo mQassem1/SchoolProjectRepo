@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SchoolProject.Data;
 using SchoolProject.Models;
 
@@ -11,16 +12,19 @@ namespace SchoolProject.Models
     public class SQLStudentRepository : IStudentRepository
     {
         private readonly ApplicationDbContext context;
+        private readonly ILogger<SQLStudentRepository> logger;
 
-        public SQLStudentRepository(ApplicationDbContext context)
+        public SQLStudentRepository(ApplicationDbContext context,ILogger<SQLStudentRepository> logger)
         {
             this.context = context;
+            this.logger = logger;
         }
+
         public Student Create(Student student)
         {
-            context.Students.Add(student);
-            context.SaveChanges();
-            return student ;
+             context.Students.Add(student);
+             context.SaveChanges();
+             return student ;
         }
 
         public Student DeleteStudent(int id)
@@ -28,7 +32,7 @@ namespace SchoolProject.Models
             Student student = context.Students.Find(id);
             if (student != null)
             {
-                context.Remove(student);
+                context.Students.Remove(student);
                 context.SaveChanges();
             }
 
