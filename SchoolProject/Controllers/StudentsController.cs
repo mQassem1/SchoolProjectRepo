@@ -72,7 +72,7 @@ namespace SchoolProject.Controllers
             {
                 List<StudentCourse> Courses = studentRepository.GetStudentCourses(id).ToList();
 
-                return View(Courses);
+                return PartialView("_CoursesList",Courses);
             }
             else
             {
@@ -81,27 +81,46 @@ namespace SchoolProject.Controllers
             }
           
         }
-            
 
-        // GET: Students/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [HttpGet]  
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
-
-            var student = await context.Students
-                .Include(s => s.Department)
-                .Include(s => s.Level)
-                .FirstOrDefaultAsync(m => m.StudentId == id);
-            if (student == null)
+            else
             {
-                return NotFound();
-            }
+                var student = studentRepository.GetStudentById(id.Value);
+                if (student == null)
+                {
+                    return View("NotFound");
+                }
 
-            return View(student);
+                return View(student);
+            }
         }
+
+
+        //// GET: Students/Details/5
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var student = await context.Students
+        //        .Include(s => s.Department)
+        //        .Include(s => s.Level)
+        //        .FirstOrDefaultAsync(m => m.StudentId == id);
+        //    if (student == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(student);
+        //}
 
         [HttpGet]
         public IActionResult Create()
@@ -145,61 +164,35 @@ namespace SchoolProject.Controllers
                     Email = model.Email,
                     DepartmentId = model.DepartmentId,
                     LevelId = model.LevelId,
-                   // PhotoPath = uniqueFileName
+                    PhotoPath = uniqueFileName
                 };
 
                 studentRepository.Create(student);
-             
 
-                var StudentId = context.Students.OrderBy(x => x.StudentId).Select(x => x.StudentId).LastOrDefault();
+                //var Id = (from st in context.Students
+                //                 orderby st.StudentId ascending
+                //                 select st.StudentId).LastOrDefault();
 
-                //Address address = new Address
-                //{
-                //    StudentId=StudentId,
-                //    Address1 = model.Address1,
-                //    Address2 = model.Address2,
-                //    City = model.City,
-                //    State = model.State,
-                //    Country = model.Country,
-                //    ZippCode = model.ZippCode
-                //};
+                var studentId = context.Students.OrderBy(x => x.StudentId).Select(x => x.StudentId).LastOrDefault();
+              
+                Address address = new Address
+                {
+                    StudentId = studentId,
+                    Address1 = model.Address1,
+                    Address2 = model.Address2,
+                    City = model.City,
+                    State = model.State,
+                    Country = model.Country,
+                    ZippCode = model.ZippCode
+                };
 
-                //addressRepository.AddAddress(address);
+                addressRepository.AddAddress(address);
 
                 return View("StudentAddSuccess");
             }
 
             return View(model);
        }
-
-
-
-
-        //// GET: Students/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "DepartmentId");
-        //    ViewData["LevelId"] = new SelectList(_context.Levels, "LevelId", "LevelId");
-        //    return View();
-        //}
-
-        //// POST: Students/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("StudentId,Fname,Lname,Email,PhotoPath,LevelId,DepartmentId")] Student student)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(student);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "DepartmentId", student.DepartmentId);
-        //    ViewData["LevelId"] = new SelectList(_context.Levels, "LevelId", "LevelId", student.LevelId);
-        //    return View(student);
-        //}
 
         // GET: Students/Edit/5
         public async Task<IActionResult> Edit(int? id)

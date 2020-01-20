@@ -1,53 +1,107 @@
-﻿@model SchoolProject.Models.Student
+﻿@model Student
 
 @{
-    ViewData["Title"] = "Details";
+    ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+     var photoPath = "~/images/" + (Model.PhotoPath ?? "NoImage.jpg");
 }
 
-<h1>Details</h1>
 
-<div>
-    <h4>Student</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhotoPath)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhotoPath)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Level)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Level.LevelId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Department)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Department.DepartmentId)
-        </dd>
-    </dl>
+<h4 class="mt-2">Student Details:</h4>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="table-responsive-md">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead class="table-active">
+                                <tr>
+                                    <th>property</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Name :</td>
+                                    <td>@Model.Fname @Model.Lname</td>
+                                </tr>
+                                <tr>
+                                    <td>Email :</td>
+                                    <td>@Model.Email</td>
+                                </tr>
+                                <tr>
+                                    <td>Level :</td>
+                                    <td>@Model.Level.LevelName</td>
+                                </tr>
+                                <tr>
+                                    <td>Department :</td>
+                                    <td>@Model.Department.DepartmentName</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img class="card-img-top " src="@photoPath" asp-append-version="true" />
+                </div>
+            </div>
+            <hr />
+            <h3>Address Details:</h3>
+            <hr />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive-md">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Address</th>
+                                    <th>Address Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Address 1</td>
+                                    <td>@Model.Address.Address1</td>
+                                </tr>
+                                <tr>
+                                    <td>Address 2</td>
+                                    <td>@Model.Address.Address2</td>
+                                </tr>
+                                <tr>
+                                    <td>Country </td>
+                                    <td>@Model.Address.Country</td>
+                                </tr>
+                                <tr>
+                                    <td>State </td>
+                                    <td>@Model.Address.State</td>
+                                </tr>
+                                <tr>
+                                    <td>City </td>
+                                    <td>@Model.Address.City</td>
+                                </tr>
+                                <tr>
+                                    <td>Zipp Code </td>
+                                    <td>@Model.Address.ZippCode</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                  
+                   
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.StudentId">Edit</a> |

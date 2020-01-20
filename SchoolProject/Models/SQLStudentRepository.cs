@@ -52,13 +52,13 @@ namespace SchoolProject.Models
             return context.Students.Find(email);
         }
 
-        public class StudentCourse
-        {
-            public int CourseId { get; set; }
-            public string CourseCode { get; set; }
-            public string CourseName { get; set; }
-            public float CourseGPA { get; set; }
-        }
+        //public class StudentCourse
+        //{
+        //    public int CourseId { get; set; }
+        //    public string CourseCode { get; set; }
+        //    public string CourseName { get; set; }
+        //    public float CourseGPA { get; set; }
+        //}
 
         public List<StudentCourse> GetStudentCourses(int id)
         {
@@ -97,7 +97,8 @@ namespace SchoolProject.Models
 
         public Student GetStudentById(int id)
         {
-            return context.Students.Find(id);
+            var student = context.Students.Where(x => x.StudentId == id).Include(x => x.Department).Include(x => x.Level).Include(x => x.Address).FirstOrDefault();
+            return student;
         }
 
         public Student UpdateStudent(Student StudentChanges)

@@ -30,16 +30,16 @@ namespace SchoolProject.ViewModels
         [Display(Name = "Level")]
         public int LevelId { get; set; }
 
-       
-        //[MaxLength(50, ErrorMessage = "Address is Too Long")]
-        //public string Address1 { get; set; }
 
-        //[MaxLength(50, ErrorMessage = "Address is Too Long")]
-        //public string Address2 { get; set; }
-        //public string City { get; set; }
-        //public string State { get; set; }
-        //public string Country { get; set; }
-        //public int ZippCode { get; set; }
+        [MaxLength(50, ErrorMessage = "Address is Too Long")]
+        public string Address1 { get; set; }
+
+        [MaxLength(50, ErrorMessage = "Address is Too Long")]
+        public string Address2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
+        public int ZippCode { get; set; }
 
 
         public IFormFile PhotoPath { get; set; }
