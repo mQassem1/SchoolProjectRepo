@@ -6,11 +6,11 @@
 
 @if (Model.Any())
 {
-    <div class="container">
-        <div class="row mt-3">
+  
+        <div class="row mt-1">
             <div class="col-md-12">
                 <div class="table-responsive-md">
-                    <table class="table table-bordered table-hover table-primary">
+                    <table class="table table-bordered table-hover">
                         <thead class="table-active">
                             <tr>
                                 <th>
@@ -20,13 +20,13 @@
                                     Course Name
                                 </th>
                                 <th>
-                                    Course Code
+                                     Course Code 
                                 </th>
                                 <th>
-                                    Course GPA
+                                     Course GPA 
                                 </th>
                                 <th>
-                                    Course Hours
+                                    Course Hours 
                                 </th>
                             </tr>
                         </thead>
@@ -50,23 +50,20 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.CourseHours)
                                     </td>
-                                    <td>
-                                        <a asp-action="Edit" asp-route-id="">Edit</a>
-                                    </td>
                                 </tr>
-
                             }
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
+ 
 }
 else
 {
-    <div class="container">
-        <div class="row mt-3">
+    
+        <div class="row mt-1">
+
             <div class="col-md-12">
 
                 <div class="table-responsive-md">
@@ -93,12 +90,12 @@ else
                         </thead>
                         <tbody>
                             <tr>
-                                <td colspan="4" class="text-center mt-5">No Courses To View</td>
+                                <td colspan="5" class="text-center mt-5">No Courses To View</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
+   
 }

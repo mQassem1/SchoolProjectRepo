@@ -72,7 +72,7 @@ namespace SchoolProject.Controllers
             {
                 List<StudentCourse> Courses = studentRepository.GetStudentCourses(id).ToList();
 
-                return PartialView("_CoursesList",Courses);
+                return View(Courses);
             }
             else
             {
@@ -128,8 +128,22 @@ namespace SchoolProject.Controllers
             
             ViewBag.DepartmentId = new SelectList(context.Departments, "DepartmentId", "DepartmentName").ToList();
             ViewBag.LevelId = new SelectList(context.Levels, "LevelId", "LevelName").ToList();
+            ViewBag.GenderId = new SelectList(context.Genders, "GenderId", "GenderName").ToList();
+
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Edit()
+        {
+
+            ViewBag.DepartmentId = new SelectList(context.Departments, "DepartmentId", "DepartmentName").ToList();
+            ViewBag.LevelId = new SelectList(context.Levels, "LevelId", "LevelName").ToList();
+            ViewBag.GenderId = new SelectList(context.Genders, "GenderId", "GenderName").ToList();
+
+            return View();
+        }
+
 
         private string ProcessUploadedFile(StudentCreateViewModel model)
         {
@@ -164,14 +178,11 @@ namespace SchoolProject.Controllers
                     Email = model.Email,
                     DepartmentId = model.DepartmentId,
                     LevelId = model.LevelId,
+                    GenderId = model.GenderId,
                     PhotoPath = uniqueFileName
                 };
 
                 studentRepository.Create(student);
-
-                //var Id = (from st in context.Students
-                //                 orderby st.StudentId ascending
-                //                 select st.StudentId).LastOrDefault();
 
                 var studentId = context.Students.OrderBy(x => x.StudentId).Select(x => x.StudentId).LastOrDefault();
               

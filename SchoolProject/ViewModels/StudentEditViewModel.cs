@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using SchoolProject.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace SchoolProject.ViewModels
 {
-    public class StudentCreateViewModel
+    public class StudentEditViewModel
     {
-        
         [Required]
-        [MinLength(3,ErrorMessage ="Name is Too Short"), MaxLength(50, ErrorMessage = "Name Is Too Long")]
-        [Display(Name ="First Name")]
+        [MinLength(3, ErrorMessage = "Name is Too Short"), MaxLength(50, ErrorMessage = "Name Is Too Long")]
+        [Display(Name = "First Name")]
         public string Fname { get; set; }
+
         [Required]
         [MinLength(3, ErrorMessage = "Name is Too Short"), MaxLength(50, ErrorMessage = "Name Is Too Long")]
         [Display(Name = "Last Name")]
         public string Lname { get; set; }
 
-        [Required,EmailAddress(ErrorMessage ="Invalid Email Format")]
+        [Required, EmailAddress(ErrorMessage = "Invalid Email Format")]
         [Display(Name = "Email Address")]
         public string Email { get; set; }
 
@@ -46,6 +45,5 @@ namespace SchoolProject.ViewModels
 
 
         public IFormFile PhotoPath { get; set; }
-
     }
 }

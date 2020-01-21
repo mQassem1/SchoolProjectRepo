@@ -44,6 +44,7 @@ namespace SchoolProject.Models
             return context.Students.Include(x => x.Address)
                                    .Include(x=>x.Level)
                                    .Include(x=>x.Department)
+                                   .Include(x=>x.Gender)
                                    .ToList();
         }
 
@@ -52,43 +53,15 @@ namespace SchoolProject.Models
             return context.Students.Find(email);
         }
 
-        //public class StudentCourse
-        //{
-        //    public int CourseId { get; set; }
-        //    public string CourseCode { get; set; }
-        //    public string CourseName { get; set; }
-        //    public float CourseGPA { get; set; }
-        //}
-
         public List<StudentCourse> GetStudentCourses(int id)
         {
-            //var result = from s in context.Students
-            //             join sc in context.StudentCourseRelations
-            //             on s.StudentId equals sc.StudentId
-            //             join c in context.Courses
-            //             on sc.CourseId equals c.CourseId
-            //             where (s.StudentId == id)
-            //             select (new StudentCourse
-            //             {
-            //                 CourseId = c.CourseId,
-            //                 CourseCode = c.Code,
-            //                 CourseName = c.Name,
-            //                 CourseGPA = sc.GPA
-            //             });
-
-            //return result.ToList();
-            //SelectMany get the subList of a list 
-          //  var t = context.Departments.SelectMany(x => x.Students);
-
-
             var result = context.StudentCourseRelations.Where(x => x.StudentId == id).Select(e => new StudentCourse
             {
                 CourseCode = e.Course.Code,
                 CourseId = e.Course.CourseId,
                 CourseGPA = e.GPA,
-                CourseName = e.Course.Name
-
-
+                CourseName = e.Course.Name,
+                CourseHours=e.Course.Hours,
             }).ToList();
 
             return result;
@@ -97,7 +70,13 @@ namespace SchoolProject.Models
 
         public Student GetStudentById(int id)
         {
-            var student = context.Students.Where(x => x.StudentId == id).Include(x => x.Department).Include(x => x.Level).Include(x => x.Address).FirstOrDefault();
+            var student = context.Students.Include(x => x.Department)
+                                          .Include(x => x.Level)
+                                          .Include(x => x.Address)
+                                          .Include(x=>x.Gender)
+                                          .Include(x=>x.CourseRelation)
+                                          .FirstOrDefault(x => x.StudentId == id);
+
             return student;
         }
 

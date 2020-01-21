@@ -1,9 +1,10 @@
 ﻿@model Student
-
+@inject IStudentRepository studentRepo
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
-     var photoPath = "~/images/" + (Model.PhotoPath ?? "NoImage.jpg");
+    var studentCourses = ViewBag.StudentCourses;
+    var photoPath = "~/images/" + (Model.PhotoPath ?? "NoImage.jpg");
 }
 
 
@@ -24,8 +25,16 @@
                             </thead>
                             <tbody>
                                 <tr>
+                                    <td>ID :</td>
+                                    <td>@Model.StudentId</td>
+                                </tr>
+                                <tr>
                                     <td>Name :</td>
                                     <td>@Model.Fname @Model.Lname</td>
+                                </tr>
+                                <tr>
+                                    <td>Gender :</td>
+                                    <td>@Model.Gender.GenderName</td>
                                 </tr>
                                 <tr>
                                     <td>Email :</td>
@@ -70,15 +79,15 @@
                                     <td>@Model.Address.Address2</td>
                                 </tr>
                                 <tr>
-                                    <td>Country </td>
+                                    <td>Country</td>
                                     <td>@Model.Address.Country</td>
                                 </tr>
                                 <tr>
-                                    <td>State </td>
+                                    <td>State</td>
                                     <td>@Model.Address.State</td>
                                 </tr>
                                 <tr>
-                                    <td>City </td>
+                                    <td>City</td>
                                     <td>@Model.Address.City</td>
                                 </tr>
                                 <tr>
@@ -90,18 +99,19 @@
                     </div>
                 </div>
             </div>
+            <hr />
+            <h3>Courses Details:</h3>
+            <hr />
             <div class="row">
                 <div class="col-md-12">
-
-                  
-                   
+                    @{
+                        var Courses = studentRepo.GetStudentCourses(Model.StudentId);
+                    }
+                    @await Html.PartialAsync("_CoursesList", Courses)
                 </div>
             </div>
-
-
         </div>
     </div>
-
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.StudentId">Edit</a> |

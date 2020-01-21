@@ -13,18 +13,27 @@ namespace SchoolProject.Models
         public int StudentId { get; set; }
         public string Fname { get; set; }
         public string Lname { get; set; }
+
+        [Column(Order = 4)]
+        public int GenderId { get; set; }
+       
+        [ForeignKey(nameof(GenderId))]
+        public Gender Gender { get; set; }
+
+
         public string Email { get; set; }
         public string PhotoPath { get; set; }
 
+      
+      
         public int LevelId { get; set; }
-
         [ForeignKey(nameof(LevelId))]
         public Level Level { get; set; }
 
         public int DepartmentId { get; set; }
-
         [ForeignKey(nameof(DepartmentId))]
         public Department Department { get; set; }
+
 
         public Address Address { get; set; }
 

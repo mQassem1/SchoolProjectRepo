@@ -12,7 +12,7 @@ namespace SchoolProject.Models
         public int CourseId { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
-        public string Hours { get; set; }
+        public int Hours { get; set; }
         public ICollection<StudentCourseRelation> StudentsRelations { get; set; }
     }
 }

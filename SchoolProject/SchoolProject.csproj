@@ -10,6 +10,14 @@
     <Compile Remove="Data\Migrations\20200112095924_initializeDb.Designer.cs" />
     <Compile Remove="Data\Migrations\20200112113146_initializeSchoolRelations2.cs" />
     <Compile Remove="Data\Migrations\20200112113146_initializeSchoolRelations2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200121141132_AddgenderTable.cs" />
+    <Compile Remove="Data\Migrations\20200121141132_AddgenderTable.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200121141449_AddgenderTable.cs" />
+    <Compile Remove="Data\Migrations\20200121141449_AddgenderTable.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200121142031_editColOrder2.cs" />
+    <Compile Remove="Data\Migrations\20200121142031_editColOrder2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200121142656_editColOrder1.cs" />
+    <Compile Remove="Data\Migrations\20200121142656_editColOrder1.Designer.cs" />
   </ItemGroup>
 
 
@@ -22,11 +30,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

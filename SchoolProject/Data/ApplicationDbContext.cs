@@ -20,6 +20,7 @@ namespace SchoolProject.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Level> Levels { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Gender> Genders { get; set; }
         public DbSet<StudentCourseRelation> StudentCourseRelations { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolProject.Data;
 
 namespace SchoolProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200121115818_repairHoursFieldCoursesTable")]
+    partial class repairHoursFieldCoursesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,21 +300,6 @@ namespace SchoolProject.Data.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("SchoolProject.Models.Gender", b =>
-                {
-                    b.Property<int>("GenderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("GenderName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("GenderId");
-
-                    b.ToTable("Genders");
-                });
-
             modelBuilder.Entity("SchoolProject.Models.Level", b =>
                 {
                     b.Property<int>("LevelId")
@@ -344,9 +331,6 @@ namespace SchoolProject.Data.Migrations
                     b.Property<string>("Fname")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GenderId")
-                        .HasColumnType("int");
-
                     b.Property<int>("LevelId")
                         .HasColumnType("int");
 
@@ -359,8 +343,6 @@ namespace SchoolProject.Data.Migrations
                     b.HasKey("StudentId");
 
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("GenderId");
 
                     b.HasIndex("LevelId");
 
@@ -450,12 +432,6 @@ namespace SchoolProject.Data.Migrations
                     b.HasOne("SchoolProject.Models.Department", "Department")
                         .WithMany("Students")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SchoolProject.Models.Gender", "Gender")
-                        .WithMany("Students")
-                        .HasForeignKey("GenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
