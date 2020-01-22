@@ -25,7 +25,6 @@ namespace SchoolProject.Models
         public string PhotoPath { get; set; }
 
       
-      
         public int LevelId { get; set; }
         [ForeignKey(nameof(LevelId))]
         public Level Level { get; set; }

@@ -10,7 +10,6 @@ namespace SchoolProject.ViewModels
 {
     public class StudentCreateViewModel
     {
-        
         [Required]
         [MinLength(3,ErrorMessage ="Name is Too Short"), MaxLength(50, ErrorMessage = "Name Is Too Long")]
         [Display(Name ="First Name")]

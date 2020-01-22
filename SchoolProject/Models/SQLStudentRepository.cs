@@ -29,7 +29,12 @@ namespace SchoolProject.Models
 
         public Student DeleteStudent(int id)
         {
-            Student student = context.Students.Find(id);
+            Student student = context.Students.Include(x=>x.Address)
+                                              .Include(x=>x.Level)
+                                              .Include(x=>x.Department)
+                                              .Include(x=>x.Gender)
+                                              .Include(x=>x.CourseRelation)
+                                              .FirstOrDefault(x=>x.StudentId==id);
             if (student != null)
             {
                 context.Students.Remove(student);
@@ -83,26 +88,14 @@ namespace SchoolProject.Models
         public Student UpdateStudent(Student StudentChanges)
         {
             var student = context.Students.Attach(StudentChanges);
-            student.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            student.State = EntityState.Modified;
             context.SaveChanges();
-            #region
-            //Student st = context.Students.Find(StudentChanges.StudentId);
-
-            //Student st1 = new Student
-            //{
-            //    StudentId = st.StudentId,
-            //    Fname = st.Fname,
-            //    Lname = st.Lname,
-            //    Address = st.Address,
-            //    Email = st.Email,
-            //    DepartmentId=st.DepartmentId,
-            //    LevelId=st.LevelId
-            //};
-
-            //context.Students.Add(st1);
-            //context.SaveChanges();
-            #endregion
             return StudentChanges;
+        }
+
+        public bool IsSudentExist(int id)
+        {
+            return context.Students.Any(x => x.StudentId == id);
         }
     }
 }

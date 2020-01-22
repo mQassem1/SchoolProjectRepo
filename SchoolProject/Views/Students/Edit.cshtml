@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Edite";
-    // Layout = "~/Views/Shared/_Layout.cshtml";
+   
 }
 
 <h1>Edit</h1>
@@ -10,10 +10,11 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <form enctype="multipart/form-data" method="post" asp-action="Create">
+            <form enctype="multipart/form-data" method="post" asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-row">
                     <div class="col-md-6 form-group">
+                        <input hidden asp-for="StudentId" />
                         <label asp-for="Fname" class="control-label"></label>
                         <input asp-for="Fname" class="form-control" placeholder="First Name" />
                         <span asp-validation-for="Fname" class="text-danger"></span>
@@ -85,26 +86,34 @@
                         <span asp-validation-for="ZippCode" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-group form-row">
-                    <label asp-for="PhotoPath" class="col-form-label"></label>
-                    <div class="custom-file">
-                        <input asp-for="PhotoPath" class="form-control custom-file-input" />
-                        <label class="custom-file-label">Choose File...</label>
+                <hr />
+                <div>
+                    <h3>Student Photo :</h3>
+                </div>
+                <hr />
+                <div class="form-row form-group">
+                    <div class="col-md-6">
+                        <div class="form-group form-row">
+                            <label asp-for="PhotoPath" class="col-form-label"></label>
+                            <div class="custom-file">
+                                <input asp-for="PhotoPath" class="form-control custom-file-input" />
+                                <label class="custom-file-label">Choose File...</label>
+                            </div>
+                        </div>
                     </div>
 
+                    <div class="col-md-4 ml-auto">
+                        <img style="width:350px; height:250px;" src="~/images/@Model.ExistingPhotoPath" />
+                    </div>
                 </div>
-
-
+                <hr />
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Update" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>
 
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
 </div>
 
 @section Scripts {

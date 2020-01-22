@@ -42,6 +42,7 @@ namespace SchoolProject
             services.AddScoped<ILevelRepository, SQLLevelRepository>();
             services.AddScoped<IDepartmentRepository, SQLDepartmentRepository>();
             services.AddScoped<ICoursesRepository, SQLCourseRepository>();
+            services.AddScoped<IGenderRepository, SQLGenderRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

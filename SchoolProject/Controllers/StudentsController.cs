@@ -36,6 +36,7 @@ namespace SchoolProject.Controllers
             this.hostingEnvironment = hostingEnvironment;
         }
 
+
         [HttpGet]
         public IActionResult ListStudents()
         {
@@ -101,27 +102,6 @@ namespace SchoolProject.Controllers
             }
         }
 
-
-        //// GET: Students/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var student = await context.Students
-        //        .Include(s => s.Department)
-        //        .Include(s => s.Level)
-        //        .FirstOrDefaultAsync(m => m.StudentId == id);
-        //    if (student == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(student);
-        //}
-
         [HttpGet]
         public IActionResult Create()
         {
@@ -134,17 +114,86 @@ namespace SchoolProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit()
+        public IActionResult Edit(int id)
         {
+                ViewBag.DepartmentId = new SelectList(context.Departments, "DepartmentId", "DepartmentName").ToList();
+                ViewBag.LevelId = new SelectList(context.Levels, "LevelId", "LevelName").ToList();
+                ViewBag.GenderId = new SelectList(context.Genders, "GenderId", "GenderName").ToList();
 
-            ViewBag.DepartmentId = new SelectList(context.Departments, "DepartmentId", "DepartmentName").ToList();
-            ViewBag.LevelId = new SelectList(context.Levels, "LevelId", "LevelName").ToList();
-            ViewBag.GenderId = new SelectList(context.Genders, "GenderId", "GenderName").ToList();
+                var student = studentRepository.GetStudentById(id);
+                if (student == null)
+                {
+                    return View("NotFound");
+                }
 
-            return View();
+                StudentEditViewModel model = new StudentEditViewModel
+                {
+                    StudentId=student.StudentId,
+                    Fname = student.Fname,
+                    Lname = student.Lname,
+                    GenderId = student.GenderId,
+                    Email = student.Email,
+                    DepartmentId = student.DepartmentId,
+                    LevelId = student.LevelId,
+                    ExistingPhotoPath = student.PhotoPath,
+                    Address1 = student.Address.Address1,
+                    Address2 = student.Address.Address2,
+                    City = student.Address.City,
+                    Country = student.Address.Country,
+                    State = student.Address.State,
+                    ZippCode = student.Address.ZippCode
+                };
+
+                return View(model);
         }
 
+        [HttpPost]
+        public IActionResult Edit(StudentEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Student student = studentRepository.GetStudentById(model.StudentId);
+                if (student == null)
+                {
+                    return View("NotFound");
+                }
 
+                student.StudentId = model.StudentId;
+                student.Fname = model.Fname;
+                student.Lname = model.Lname;
+                student.LevelId = model.LevelId;
+                student.DepartmentId = model.DepartmentId;
+                student.GenderId = model.GenderId;
+                student.Email = model.Email;
+                student.Address.Address1 = model.Address1;
+                student.Address.Address2 = model.Address2;
+                student.Address.City = model.City;
+                student.Address.Country = model.Country;
+                student.Address.StudentId = model.StudentId;
+                student.Address.State = model.State;
+                student.Address.ZippCode = model.ZippCode;
+
+                if (student.PhotoPath != null)
+                {
+                    if (model.ExistingPhotoPath != null)
+                    {
+                        string filePath = Path.Combine(hostingEnvironment.WebRootPath, "images", model.ExistingPhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+
+                    student.PhotoPath = ProcessUploadedFile(model);
+                }
+
+                 studentRepository.UpdateStudent(student);
+              
+                
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(model);
+        }
+
+ 
         private string ProcessUploadedFile(StudentCreateViewModel model)
         {
             string uniqueFileName = null;
@@ -205,95 +254,33 @@ namespace SchoolProject.Controllers
             return View(model);
        }
 
-        // GET: Students/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var student = await context.Students.FindAsync(id);
-            if (student == null)
-            {
-                return NotFound();
-            }
-            ViewData["DepartmentId"] = new SelectList(context.Departments, "DepartmentId", "DepartmentId", student.DepartmentId);
-            ViewData["LevelId"] = new SelectList(context.Levels, "LevelId", "LevelId", student.LevelId);
-            return View(student);
-        }
-
-        // POST: Students/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StudentId,Fname,Lname,Email,PhotoPath,LevelId,DepartmentId")] Student student)
-        {
-            if (id != student.StudentId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    context.Update(student);
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StudentExists(student.StudentId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["DepartmentId"] = new SelectList(context.Departments, "DepartmentId", "DepartmentId", student.DepartmentId);
-            ViewData["LevelId"] = new SelectList(context.Levels, "LevelId", "LevelId", student.LevelId);
-            return View(student);
-        }
-
-        // GET: Students/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return View("NotFound");
             }
 
-            var student = await context.Students
-                .Include(s => s.Department)
-                .Include(s => s.Level)
-                .FirstOrDefaultAsync(m => m.StudentId == id);
+            var student = studentRepository.GetStudentById(id.Value);
+
             if (student == null)
             {
-                return NotFound();
+                return View("NotFound");
+            }
+            else
+            {
+                studentRepository.DeleteStudent(id.Value);
+                
             }
 
-            return View(student);
+            return RedirectToAction("Index","Home");
         }
-
-        // POST: Students/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        
+        [HttpGet]
+        public IActionResult Search()
         {
-            var student = await context.Students.FindAsync(id);
-            context.Students.Remove(student);
-            await context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool StudentExists(int id)
-        {
-            return context.Students.Any(e => e.StudentId == id);
+            return View();
         }
     }
 }
