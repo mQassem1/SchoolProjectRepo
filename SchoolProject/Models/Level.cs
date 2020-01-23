@@ -10,6 +10,8 @@ namespace SchoolProject.Models
     {
         [Key]
         public int LevelId { get; set; }
+
+        [Display(Name ="Level Name")]
         public string LevelName { get; set; }
 
         public ICollection<Student> Students { get; set; }

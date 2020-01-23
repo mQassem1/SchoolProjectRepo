@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SchoolProject.Data;
 using SchoolProject.Models;
+using SchoolProject.ViewModels;
 
 namespace SchoolProject.Controllers
 {
@@ -56,13 +57,26 @@ namespace SchoolProject.Controllers
             return View();
         }
 
-      
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Create()
-        //{
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(CreateLevelViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Level level = new Level
+                {
+                    LevelName = model.LevelName
+                };
+
+                levelRepository.AddLevel(level);
+
+                return RedirectToAction("Index");
+
+            }
             
-        //}
+            return View(model);
+        }
 
         // GET: Levels/Edit/5
         public async Task<IActionResult> Edit(int? id)
