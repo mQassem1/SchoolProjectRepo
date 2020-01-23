@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Edite";
-   
+    var Photo = "~/images/" + (Model.ExistingPhotoPath ?? "NoImage.jpg");
 }
 
 <h1>Edit</h1>
@@ -15,6 +15,7 @@
                 <div class="form-row">
                     <div class="col-md-6 form-group">
                         <input hidden asp-for="StudentId" />
+                        <input hidden asp-for="ExistingPhotoPath" />
                         <label asp-for="Fname" class="control-label"></label>
                         <input asp-for="Fname" class="form-control" placeholder="First Name" />
                         <span asp-validation-for="Fname" class="text-danger"></span>
@@ -103,7 +104,7 @@
                     </div>
 
                     <div class="col-md-4 ml-auto">
-                        <img style="width:350px; height:250px;" src="~/images/@Model.ExistingPhotoPath" />
+                        <img style="width:350px; height:250px;" src="@Photo" asp-append-version="true" />
                     </div>
                 </div>
                 <hr />

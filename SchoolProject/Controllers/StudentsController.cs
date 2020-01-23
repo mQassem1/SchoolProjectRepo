@@ -173,7 +173,7 @@ namespace SchoolProject.Controllers
                 student.Address.State = model.State;
                 student.Address.ZippCode = model.ZippCode;
 
-                if (student.PhotoPath != null)
+                if (model.PhotoPath != null)
                 {
                     if (model.ExistingPhotoPath != null)
                     {

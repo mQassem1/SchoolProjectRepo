@@ -4,16 +4,17 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SchoolProject.Models
+namespace SchoolProject.ViewModels
 {
-    public class Course
+    public class CreateCourseViewModel
     {
-        [Key]
-        [Display(Name ="Course Id")]
-        public int CourseId { get; set; }
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public string Code { get; set; }
+
+        [Required]
         public int Hours { get; set; }
-        public ICollection<StudentCourseRelation> StudentsRelations { get; set; }
     }
 }

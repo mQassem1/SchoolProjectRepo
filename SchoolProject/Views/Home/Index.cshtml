@@ -15,15 +15,15 @@
                     <div class="card-header">
                         <h3>@student.Fname @student.Lname</h3>
                     </div>
-                    <img class="card-img-top imageThumnail" src="@photoPath" asp-append-version="true" />
+                    <img class="card-img-top imageThumnail" src="@photoPath" asp-append-version="true" style="width:auto;height:300px;"/>
                     <div class="card-footer text-center">
                         <a asp-action="Details" asp-controller="Students" asp-route-id="@student.StudentId" class="btn btn-primary m-1">View</a> @*//Tag helpers*@
                         <a asp-action="Edit" asp-controller="Students" asp-route-id="@student.StudentId" class="btn btn-primary m-1 ">Edit</a>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">
                             Delete
                         </button>
-                        <form asp-action="Delete" asp-controller="Students" asp-route-id="@student.StudentId" method="post">
-                        </form>
+                        @*<form asp-action="Delete" asp-controller="Students" asp-route-id="@student.StudentId" method="post">
+                        </form>*@
                     </div>
                 </div>
             </div>

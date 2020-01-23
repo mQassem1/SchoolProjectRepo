@@ -1,0 +1,76 @@
+﻿@model Course
+
+@{
+    ViewBag.Title = "Delete Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <h2 id="headerText" class="mt-2">Course Details:</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="table-active">
+                    <tr class="w-25 table-info">
+                        <th>
+                            Property:
+                        </th>
+                        <th class="w-75">
+                            Details:
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="border">
+                    <tr>
+                        <td>@Html.DisplayNameFor(m => m.CourseId)</td>
+                        <td>@Model.CourseId</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(m => m.Name)</td>
+                        <td>@Model.Name</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(m => m.Code)</td>
+                        <td>@Model.Code</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(m => m.Hours)</td>
+                        <td>@Model.Hours</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirm">
+            Delete
+        </button>
+        <a asp-action="Index" class="btn btn-warning">Cancel</a>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmTitle">Delete Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are You sure you want to delete Cource with Id = @Model.CourseId
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form asp-action="Delete" asp-controller="Courses" asp-route-id="@Model.CourseId" method="post">
+                    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

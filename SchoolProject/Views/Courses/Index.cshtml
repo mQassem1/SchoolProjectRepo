@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Course>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="container">
+        <h1 id="headerText" class="mt-2">Courses List:</h1>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-hover border table-striped text-center">
+                    <thead>
+                        <tr class="table-info">
+                            <th>
+                                @Html.DisplayNameFor(model => model.CourseId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Code)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Hours)
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Course course in Model)
+                        {
+                            <tr>
+                                <td class="align-content-center">
+                                    @Html.DisplayFor(modelItem => course.CourseId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => course.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => course.Code)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => course.Hours)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@course.CourseId" class="btn btn-primary btn-sm">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@course.CourseId" class="btn btn-secondary btn-sm">Details</a>
+                                    <a asp-action="Delete" asp-route-id="@course.CourseId" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <p>
+            <a asp-action="Create" class="btn btn-success">Create New</a>
+            <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Back</a>
+        </p>
+    </div>
+
+   
+
+
+
+
+
+
