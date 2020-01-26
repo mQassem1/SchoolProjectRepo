@@ -22,18 +22,24 @@ namespace SchoolProject.Controllers
         private readonly IDepartmentRepository departmentRepository;
         private readonly IAddressRepository addressRepository;
         private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly ICoursesRepository coursesRepository;
+        private readonly IStudentCourseRepository studentCourseRepository;
 
         public StudentsController(ApplicationDbContext context,
                                   IStudentRepository studentRepository,
                                   IDepartmentRepository departmentRepository,
                                   IAddressRepository addressRepository,
-                                  IWebHostEnvironment hostingEnvironment)
+                                  IWebHostEnvironment hostingEnvironment,
+                                  ICoursesRepository coursesRepository,
+                                  IStudentCourseRepository studentCourseRepository)
         {
             this.context = context;
             this.studentRepository = studentRepository;
             this.departmentRepository = departmentRepository;
             this.addressRepository = addressRepository;
             this.hostingEnvironment = hostingEnvironment;
+            this.coursesRepository = coursesRepository;
+            this.studentCourseRepository = studentCourseRepository;
         }
 
 
@@ -173,7 +179,7 @@ namespace SchoolProject.Controllers
                 student.Address.State = model.State;
                 student.Address.ZippCode = model.ZippCode;
 
-                if (student.PhotoPath != null)
+                if (model.PhotoPath != null)
                 {
                     if (model.ExistingPhotoPath != null)
                     {
@@ -281,6 +287,80 @@ namespace SchoolProject.Controllers
         public IActionResult Search()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult EditCourses(int? id)
+        {
+            ViewBag.StudentId = id.Value;
+
+            if (id == null)
+            {
+                return View("NotFound");
+            }
+
+            var CoursesList = coursesRepository.GetAllCourses();
+
+            var model = new List<EditStudentCoursesViewModel>();
+
+            foreach (var item in CoursesList)
+            {
+                var editStudentCoursesViewModel = new EditStudentCoursesViewModel
+                {
+                    CourseId = item.CourseId,
+                    CourseName = item.Name,
+                    CourseCode= item.Code,
+                    CourseHours = item.Hours
+                };
+
+                if (studentCourseRepository.IsRelationExist(id.Value, item.CourseId))
+                {
+                    editStudentCoursesViewModel.IsSelected = true;
+                }
+                else
+                {
+                    editStudentCoursesViewModel.IsSelected = false;
+
+                }
+
+                model.Add(editStudentCoursesViewModel);
+            }
+           
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult EditCourses(int StudentId,List<EditStudentCoursesViewModel> model)
+        {
+            if (StudentId == 0)
+            {
+                return View("NotFound");
+            }
+
+            for (int i = 0; i < model.Count; i++)
+            {
+                if (model[i].IsSelected == true && !(studentCourseRepository.IsRelationExist(StudentId, model[i].CourseId)))
+                {
+                    var studentCourseRelation = new StudentCourseRelation
+                    {
+                        StudentId = StudentId,
+                        CourseId = model[i].CourseId
+                    };
+
+                    studentCourseRepository.Add(studentCourseRelation);
+                }
+                else if (model[i].IsSelected == false && studentCourseRepository.IsRelationExist(StudentId, model[i].CourseId))
+                {
+                    studentCourseRepository.Delete(StudentId, model[i].CourseId);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            return RedirectToAction("Details", new { id = StudentId });
         }
     }
 }

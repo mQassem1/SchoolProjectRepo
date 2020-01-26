@@ -1,0 +1,37 @@
+﻿@model CreateCourseViewModel
+
+@{
+    ViewBag.Title = "Create Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2 id="headerText" class="mt-2">Create Course:</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Course Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Code" class="control-label"></label>
+                    <input asp-for="Code" class="form-control" placeholder="Course Code" />
+                    <span asp-validation-for="Code" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Hours" class="control-label"></label>
+                    <input asp-for="Hours" class="form-control" placeholder="Course Hours" />
+                    <span asp-validation-for="Hours" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <a asp-action="Index" asp-controller="Courses" class="btn btn-warning">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

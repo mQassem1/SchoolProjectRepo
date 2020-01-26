@@ -25,6 +25,10 @@ namespace SchoolProject.Models
             return course;
         }
 
+        public bool IsCourseExist(int courseId)
+        {
+            return context.Courses.Any(x => x.CourseId == courseId);
+        }
 
         public Course DeleteCourse(int id)
         {

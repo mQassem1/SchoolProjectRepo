@@ -1,0 +1,47 @@
+﻿@model Level
+
+@{
+    ViewBag.Title = "Level Details";
+
+}
+<div class="container">
+    <h2 id="headerText" class="mt-2">Level Details:</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-striped">
+                <thead class="table-active table-info  text-center">
+                    <tr>
+                        <th class="w-25">
+                            Property
+                        </th>
+                        <th class="w-75">
+                            Details
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(m => m.LevelId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => m.LevelId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(m => m.LevelName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => m.LevelName)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <a asp-action="Edit" asp-route-id="@Model.LevelId" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-warning">Back</a>
+</div>
+

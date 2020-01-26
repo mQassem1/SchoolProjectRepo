@@ -4,18 +4,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SchoolProject.Models
+namespace SchoolProject.ViewModels
 {
-    public class Level
+    public class LevelEditViewModel
     {
-        [Key]
-        [Display(Name ="Level Id")]
         public int LevelId { get; set; }
-
+        [Required]
         [Display(Name ="Level Name")]
         public string LevelName { get; set; }
-
-        public ICollection<Student> Students { get; set; }
-
     }
 }

@@ -12,6 +12,7 @@ namespace SchoolProject.Models
         Course AddCourse(Course course);
         Course DeleteCourse(int id);
         Course UpdateCourse(Course changedCourse);
+        bool IsCourseExist(int courseId);
 
     }
 }

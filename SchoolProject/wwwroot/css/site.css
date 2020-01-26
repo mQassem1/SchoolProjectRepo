@@ -1,6 +1,21 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+@font-face {
+    font-family: 'staatliches-regular';
+    src: url('../fonts/staatliches-regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'fjallaone-regular';
+    src: url('../fonts/fjallaone-regular.ttf') format('truetype');
+    font-display:swap;
+}
+#headerText {
+    font-family: 'Fjalla One', sans-serif;
+    
+}
+
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;

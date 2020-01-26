@@ -1,13 +1,12 @@
 ﻿@model StudentEditViewModel
 
 @{
-    ViewBag.Title = "Edite";
-   
+    ViewBag.Title = "Edit Student:";
+    var Photo = "~/images/" + (Model.ExistingPhotoPath ?? "NoImage.jpg");
 }
-
-<h1>Edit</h1>
-<hr />
 <div class="container">
+    <h2 id="headerText" class="my-2">Edit Student:</h2>
+    <hr />
     <div class="row">
         <div class="col-md-12">
             <form enctype="multipart/form-data" method="post" asp-action="Edit">
@@ -15,6 +14,7 @@
                 <div class="form-row">
                     <div class="col-md-6 form-group">
                         <input hidden asp-for="StudentId" />
+                        <input hidden asp-for="ExistingPhotoPath" />
                         <label asp-for="Fname" class="control-label"></label>
                         <input asp-for="Fname" class="form-control" placeholder="First Name" />
                         <span asp-validation-for="Fname" class="text-danger"></span>
@@ -103,28 +103,28 @@
                     </div>
 
                     <div class="col-md-4 ml-auto">
-                        <img style="width:350px; height:250px;" src="~/images/@Model.ExistingPhotoPath" />
+                        <img style="width:350px; height:250px;" src="@Photo" asp-append-version="true" />
                     </div>
                 </div>
                 <hr />
                 <div class="form-group">
                     <input type="submit" value="Update" class="btn btn-primary" />
+                    <a asp-action="EditCourses" asp-controller="Students" asp-route-id="@Model.StudentId" class="btn btn-primary">Edit Courses</a>
                 </div>
             </form>
         </div>
     </div>
-
 </div>
 
 @section Scripts {
     <script>
-            $(document).ready(function () {
-                $('.custom-file-input').on("change", function () {
-                    var FileName = $(this).val().split("\\").pop();
-                    $(this).next('.custom-file-label').html(FileName);
-                })
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var FileName = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(FileName);
+            })
 
-            });
+        });
     </script>
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
