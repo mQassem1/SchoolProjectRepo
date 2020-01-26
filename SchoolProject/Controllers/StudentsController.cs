@@ -283,12 +283,7 @@ namespace SchoolProject.Controllers
             return RedirectToAction("Index","Home");
         }
         
-        [HttpGet]
-        public IActionResult Search()
-        {
-            return View();
-        }
-
+      
         [HttpGet]
         public IActionResult EditCourses(int? id)
         {
@@ -361,6 +356,40 @@ namespace SchoolProject.Controllers
             }
 
             return RedirectToAction("Details", new { id = StudentId });
+        }
+
+        [HttpGet]
+        public IActionResult Search(string searchBy,string search)
+        {
+            if (searchBy == "Gender")
+            {
+                return View(studentRepository.GetAllStudents().Where(x => x.Gender.GenderName == search || search == null).ToList());
+            }
+
+            else
+            {
+               return View(studentRepository.GetAllStudents().Where(x => x.Fname.StartsWith(search) || search == null).ToList());
+
+            }
+        }
+
+       [HttpGet]
+        public IActionResult SearchResult(int? id)
+        {
+            if (id == null)
+            {
+                return View("NotFound");
+            }
+            else
+            {
+                var student = studentRepository.GetStudentById(id.Value);
+                if (student == null)
+                {
+                    return View("NotFound");
+                }
+
+                return View("Search",student);
+            }
         }
     }
 }

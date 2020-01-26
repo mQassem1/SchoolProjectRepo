@@ -1,0 +1,47 @@
+﻿@model Department
+
+@{
+    ViewBag.Title = "Department Details";
+
+}
+<div class="container">
+    <h2 id="headerText" class="mt-2">Department Details:</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-striped">
+                <thead class="table-active table-info  text-center">
+                    <tr>
+                        <th class="w-25">
+                            Property
+                        </th>
+                        <th class="w-75">
+                            Details
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(m => m.DepartmentId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => m.DepartmentId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(m => m.DepartmentName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => m.DepartmentName)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <a asp-action="Edit" asp-route-id="@Model.DepartmentId" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-warning">Back</a>
+</div>
+

@@ -1,77 +1,70 @@
-﻿@model IEnumerable<StudentIndexViewModel>
+﻿@model IEnumerable<Student>
 
 @{
-    ViewBag.Title = "Index";
-    //   Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Search Students";
 
 }
 
-<h1>Index</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Fname)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Lname)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Level)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Department)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
+                                @Html.DisplayFor(modelItem => item.Fname)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Lname)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Level)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Department)
 
-                @Html.DisplayNameFor(model => model.Fname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhotoPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Level)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Department)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    
-                    @Html.DisplayFor(modelItem => item.Fname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Lname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhotoPath)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Level)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Department)
-
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.StudentId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.StudentId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.StudentId">Delete</a> |
-                    <a asp-action="CoursesList" asp-route-id="@item.StudentId">Courses</a>
-                </td>
-            </tr>
-
-           
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.StudentId">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.StudentId">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.StudentId">Delete</a> |
+                                <a asp-action="CoursesList" asp-route-id="@item.StudentId">Courses</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 
-        }
-    </tbody>
-</table>
 
