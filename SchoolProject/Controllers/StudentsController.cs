@@ -376,14 +376,22 @@ namespace SchoolProject.Controllers
 
                 return View(studentRepository.GetAllStudents().Where(x => x.Gender.GenderName.ToLower() == searchItem || searchItem == null).ToList());
             }
-            else
+            else if (searchBy == "Level")
+            {
+                return View(studentRepository.GetAllStudents().Where(x => x.Level.LevelName.ToLower() == searchItem || searchItem == null).ToList());
+
+            }
+            else if (searchBy == "Department")
+            {
+                return View(studentRepository.GetAllStudents().Where(x => x.Department.DepartmentName.ToLower() == searchItem || searchItem == null).ToList());
+            }
+            else 
             {
                 
                 return View(studentRepository.GetAllStudents().Where(x => searchItem == null || x.Fname.ToLower().StartsWith(searchItem)).ToList());
 
             }
 
-          
         }
 
     }

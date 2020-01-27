@@ -14,7 +14,8 @@ namespace SchoolProject.Models
         private readonly ApplicationDbContext context;
         private readonly ILogger<SQLStudentRepository> logger;
 
-        public SQLStudentRepository(ApplicationDbContext context,ILogger<SQLStudentRepository> logger)
+        public SQLStudentRepository(ApplicationDbContext context,
+                                    ILogger<SQLStudentRepository> logger)
         {
             this.context = context;
             this.logger = logger;
