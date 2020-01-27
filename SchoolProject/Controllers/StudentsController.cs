@@ -361,35 +361,30 @@ namespace SchoolProject.Controllers
         [HttpGet]
         public IActionResult Search(string searchBy,string search)
         {
+            string searchItem = search;
+            if (searchItem == null)
+            {
+                searchItem = search;
+            }
+            else
+            {
+                searchItem = search.ToLower();
+            }
+
             if (searchBy == "Gender")
             {
-                return View(studentRepository.GetAllStudents().Where(x => x.Gender.GenderName == search || search == null).ToList());
-            }
 
-            else
-            {
-               return View(studentRepository.GetAllStudents().Where(x => x.Fname.StartsWith(search) || search == null).ToList());
-
-            }
-        }
-
-       [HttpGet]
-        public IActionResult SearchResult(int? id)
-        {
-            if (id == null)
-            {
-                return View("NotFound");
+                return View(studentRepository.GetAllStudents().Where(x => x.Gender.GenderName.ToLower() == searchItem || searchItem == null).ToList());
             }
             else
             {
-                var student = studentRepository.GetStudentById(id.Value);
-                if (student == null)
-                {
-                    return View("NotFound");
-                }
+                
+                return View(studentRepository.GetAllStudents().Where(x => searchItem == null || x.Fname.ToLower().StartsWith(searchItem)).ToList());
 
-                return View("Search",student);
             }
+
+          
         }
+
     }
 }
