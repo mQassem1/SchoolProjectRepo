@@ -10,11 +10,13 @@ namespace SchoolProject.Models
     public class SQLCourseRepository : ICoursesRepository
     {
         private readonly ApplicationDbContext context;
+        private readonly ILogger<SQLCourseRepository> logger;
 
         public SQLCourseRepository(ApplicationDbContext context,
                                    ILogger<SQLCourseRepository> logger)
         {
             this.context = context;
+            this.logger = logger;
         }
 
 

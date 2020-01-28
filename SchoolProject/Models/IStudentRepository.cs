@@ -16,6 +16,7 @@ namespace SchoolProject.Models
         Student DeleteStudent(int id);
         Student UpdateStudent(Student studentChanges);
         bool IsSudentExist(int id);
+        List<StudentCourse> GetStudentTotalGPA(int id);
         List<StudentCourse> GetStudentCourses(int id);
     }
 }

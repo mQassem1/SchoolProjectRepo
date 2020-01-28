@@ -11,6 +11,7 @@ namespace SchoolProject.Models
         public string CourseCode { get; set; }
         public string CourseName { get; set; }
         public float CourseGPA { get; set; }
-        public int CourseHours { get;set; }
+        public int CourseHours { get; set; }
+        public float GPAHours { get; set; }
     }
 }

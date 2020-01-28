@@ -287,12 +287,12 @@ namespace SchoolProject.Controllers
         [HttpGet]
         public IActionResult EditCourses(int? id)
         {
-            ViewBag.StudentId = id.Value;
-
             if (id == null)
             {
                 return View("NotFound");
             }
+
+            ViewBag.StudentId = id.Value;
 
             var CoursesList = coursesRepository.GetAllCourses();
 
@@ -391,7 +391,65 @@ namespace SchoolProject.Controllers
                 return View(studentRepository.GetAllStudents().Where(x => searchItem == null || x.Fname.ToLower().StartsWith(searchItem)).ToList());
 
             }
+        }
 
+        [HttpGet]
+        public IActionResult EditStudentGrades(int? id)
+        {
+            ViewBag.StudentId = id.Value;
+
+            if (id == null)
+            {
+                return View("NotFound");
+            }
+
+            var CoursesList = studentCourseRepository.StudentCourses(id.Value);
+
+            var model = new List<EditStudentGradesViewModel>();
+
+            foreach (var item in CoursesList)
+            {
+                var editStudentGradesViewModel = new EditStudentGradesViewModel
+                {
+                  CourseId=item.CourseId,
+                  CourseCode=item.CourseCode,
+                  CourseName=item.CourseName,
+                  CourseHours=item.CourseHours,
+                  CourseGPA=item.CourseGPA
+                };
+
+               model.Add(editStudentGradesViewModel);
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult EditStudentGrades(int StudentId,List<EditStudentGradesViewModel> model)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var item in model)
+                {
+                    if (studentCourseRepository.IsRelationExist(StudentId, item.CourseId))
+                    {
+                        StudentCourseRelation studentCourse = studentCourseRepository.GetReltionById(StudentId, item.CourseId);
+
+                        studentCourse.GPA = item.CourseGPA;
+
+                        studentCourseRepository.Update(studentCourse);
+                       
+                    }
+                    else
+                    {
+                        return View("CourseStudentError");
+                    }
+                }
+
+                return RedirectToAction("Details", new { id = StudentId });
+            }
+
+            return View(model);
         }
 
     }

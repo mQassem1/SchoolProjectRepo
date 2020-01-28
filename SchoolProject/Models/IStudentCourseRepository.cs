@@ -11,6 +11,7 @@ namespace SchoolProject.Models
 
         StudentCourseRelation Add(StudentCourseRelation studentCourseRelation);
         StudentCourseRelation Delete(int studentId,int courseId);
+        StudentCourseRelation GetReltionById(int studentId, int courseId);
         StudentCourseRelation Update(StudentCourseRelation changedStudentCourseRelation);
         IEnumerable<StudentCourse> StudentCourses(int studentId);
         IEnumerable<Student> StudentsInCourse(int courseId);

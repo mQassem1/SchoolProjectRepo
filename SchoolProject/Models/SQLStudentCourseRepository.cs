@@ -47,6 +47,12 @@ namespace SchoolProject.Models
             return Relation;
         }
 
+        public StudentCourseRelation GetReltionById(int studentId, int courseId)
+        {
+           return context.StudentCourseRelations.FirstOrDefault(x => x.StudentId == studentId && x.CourseId == courseId);
+        
+        }
+
         public IEnumerable<StudentCourseRelation> GetRelations()
         {
            return context.StudentCourseRelations.ToList();
@@ -68,6 +74,7 @@ namespace SchoolProject.Models
                 CourseCode=x.Course.Code,
                 CourseHours=x.Course.Hours,
                 CourseGPA=x.GPA
+
             }).ToList();
 
             return studentCourses;

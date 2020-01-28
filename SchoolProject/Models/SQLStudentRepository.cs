@@ -73,6 +73,21 @@ namespace SchoolProject.Models
             return result;
         }
 
+        public List<StudentCourse> GetStudentTotalGPA(int id)
+        {
+            var result = context.StudentCourseRelations.Where(x => x.StudentId == id).Select(e => new StudentCourse
+            {
+                CourseCode = e.Course.Code,
+                CourseId = e.Course.CourseId,
+                CourseGPA = e.GPA,
+                CourseName = e.Course.Name,
+                CourseHours = e.Course.Hours,
+                GPAHours = e.GPA * e.Course.Hours,
+                // TotalHours = context.StudentCourseRelations.Where(x => x.StudentId == id).Sum(x => x.Course.Hours)
+            }).ToList();
+
+            return result;
+        }
 
         public Student GetStudentById(int id)
         {

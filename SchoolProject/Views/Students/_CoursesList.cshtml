@@ -2,36 +2,41 @@
 
 @{
     ViewBag.Title = "Course Details";
+    var TotalSum = 0f;
+    var TotalHours = 0;
 }
 
 @if (Model.Any())
 {
-        <div class="row mt-1">
-            <div class="col-md-12">
-                <div class="table-responsive-md">
-                    <table class="table table-bordered table-hover ">
-                        <thead class="table-active text-center">
-                            <tr>
-                                <th>
-                                    Course Id
-                                </th>
-                                <th>
-                                    Course Name
-                                </th>
-                                <th>
-                                     Course Code 
-                                </th>
-                                <th>
-                                     Course GPA 
-                                </th>
-                                <th>
-                                    Course Hours 
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-center">
-                            @foreach (var item in Model)
+    <div class="row mt-1">
+        <div class="col-md-12">
+            <div class="table-responsive-md">
+                <table class="table table-bordered table-hover ">
+                    <thead class="table-active text-center">
+                        <tr>
+                            <th>
+                                Course Id
+                            </th>
+                            <th>
+                                Course Name
+                            </th>
+                            <th>
+                                Course Code
+                            </th>
+                            <th>
+                                Course GPA
+                            </th>
+                            <th>
+                                Course Hours
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        @{ foreach (var item in Model)
                             {
+                                TotalSum += item.GPAHours;
+                                TotalHours += item.CourseHours;
+
                                 <tr>
                                     <td>
 
@@ -49,50 +54,63 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.CourseHours)
                                     </td>
+                                    <td hidden>
+                                        @Html.DisplayFor(modelItem => item.GPAHours)
+                                    </td>
                                 </tr>
                             }
-                        </tbody>
-                    </table>
-                </div>
+                            Double x;
+                             <tr>
+                                <td colspan="2" class="table-light">
+                                    Tolal GPA
+                                </td>
+                                <td colspan="3">
+                                    @Html.FormatValue((Double.TryParse((TotalSum / TotalHours).ToString(),out x)),x.ToString("0.00"))
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
 }
 else
 {
-        <div class="row mt-1">
+    <div class="row mt-1">
 
-            <div class="col-md-12">
+        <div class="col-md-12">
 
-                <div class="table-responsive-md">
+            <div class="table-responsive-md">
 
-                    <table class="table table-bordered table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Course Id
-                                </th>
-                                <th>
-                                    Course Name
-                                </th>
-                                <th>
-                                    Course Code
-                                </th>
-                                <th>
-                                    Course GPA
-                                </th>
-                                <th>
-                                    Course Hours
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="5" class="text-center mt-5">No Courses To View</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Course Id
+                            </th>
+                            <th>
+                                Course Name
+                            </th>
+                            <th>
+                                Course Code
+                            </th>
+                            <th>
+                                Course GPA
+                            </th>
+                            <th>
+                                Course Hours
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="5" class="text-center mt-5">No Courses To View</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-   
+    </div>
+
 }
