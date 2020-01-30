@@ -13,6 +13,7 @@ using SchoolProject.Models;
 using SchoolProject.ViewModels;
 using static SchoolProject.Models.SQLStudentRepository;
 
+
 namespace SchoolProject.Controllers
 {
     public class StudentsController : Controller
@@ -120,6 +121,7 @@ namespace SchoolProject.Controllers
         }
 
         [HttpGet]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Edit(int id)
         {
                 ViewBag.DepartmentId = new SelectList(context.Departments, "DepartmentId", "DepartmentName").ToList();
@@ -321,7 +323,6 @@ namespace SchoolProject.Controllers
                 model.Add(editStudentCoursesViewModel);
             }
            
-
             return View(model);
         }
 
@@ -411,11 +412,11 @@ namespace SchoolProject.Controllers
             {
                 var editStudentGradesViewModel = new EditStudentGradesViewModel
                 {
-                  CourseId=item.CourseId,
-                  CourseCode=item.CourseCode,
-                  CourseName=item.CourseName,
-                  CourseHours=item.CourseHours,
-                  CourseGPA=item.CourseGPA
+                    CourseId = item.CourseId,
+                    CourseCode = item.CourseCode,
+                    CourseName = item.CourseName,
+                    CourseHours = item.CourseHours,
+                    CourseGPA = item.CourseGPA
                 };
 
                model.Add(editStudentGradesViewModel);
@@ -452,5 +453,12 @@ namespace SchoolProject.Controllers
             return View(model);
         }
 
+        
+        public JsonResult StudentNames(string term)
+        {
+            var students = context.Students.Where(x => x.Fname.StartsWith(term))
+                                            .Select(x => x.Fname).ToList();
+            return Json(students);
+        }
     }
 }
