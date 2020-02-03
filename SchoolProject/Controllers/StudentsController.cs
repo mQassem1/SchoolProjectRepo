@@ -14,8 +14,7 @@ using SchoolProject.ViewModels;
 using PagedList.Core;
 using PagedList.Core.Mvc;
 using static SchoolProject.Models.SQLStudentRepository;
-
-
+using SchoolProject.Models.Helpers;
 
 namespace SchoolProject.Controllers
 {
@@ -363,9 +362,12 @@ namespace SchoolProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(string searchBy,string search,int page=1 ,int pageSize=3)
+        public IActionResult Search(string searchBy,string search,int pageNumber = 1)
         {
+            ViewBag.searchBy= searchBy;
+            ViewBag.search= search;
             string searchItem = search;
+            int pageSize = 2;
             if (searchItem == null)
             {
                 searchItem = search;
@@ -378,23 +380,23 @@ namespace SchoolProject.Controllers
             if (searchBy == "Gender")
             {
                 var query= studentRepository.GetAllStudents().Where(x => x.Gender.GenderName.ToLower() == searchItem || searchItem == null).ToList();
-
-                return View(query);
+                return View(PaginatedList<Student>.Create(query.AsQueryable<Student>(), pageNumber, pageSize));
             }
             else if (searchBy == "Level")
             {
-                return View(studentRepository.GetAllStudents().Where(x => x.Level.LevelName.ToLower() == searchItem || searchItem == null).ToList());
+                var query = studentRepository.GetAllStudents().Where(x => x.Level.LevelName.ToLower() == searchItem || searchItem == null).ToList();
+                return View(PaginatedList<Student>.Create(query.AsQueryable<Student>(), pageNumber, pageSize));
 
             }
             else if (searchBy == "Department")
             {
-                return View(studentRepository.GetAllStudents().Where(x => x.Department.DepartmentName.ToLower() == searchItem || searchItem == null).ToList());
+                var query = studentRepository.GetAllStudents().Where(x => x.Department.DepartmentName.ToLower() == searchItem || searchItem == null).ToList();
+                return View(PaginatedList<Student>.Create(query.AsQueryable<Student>(), pageNumber, pageSize));
             }
             else 
             {
- 
-                return View(studentRepository.GetAllStudents().Where(x => searchItem == null || x.Fname.ToLower().StartsWith(searchItem)).ToList());
-
+                var query = studentRepository.GetAllStudents().Where(x => searchItem == null || x.Fname.ToLower().StartsWith(searchItem)).ToList();
+                return View(PaginatedList<Student>.Create(query.AsQueryable<Student>(), pageNumber, pageSize));
             }
         }
 
