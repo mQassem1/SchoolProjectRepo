@@ -11,7 +11,10 @@ using Microsoft.AspNetCore.Hosting;
 using SchoolProject.Data;
 using SchoolProject.Models;
 using SchoolProject.ViewModels;
+using PagedList.Core;
+using PagedList.Core.Mvc;
 using static SchoolProject.Models.SQLStudentRepository;
+
 
 
 namespace SchoolProject.Controllers
@@ -360,7 +363,7 @@ namespace SchoolProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(string searchBy,string search)
+        public IActionResult Search(string searchBy,string search,int page=1 ,int pageSize=3)
         {
             string searchItem = search;
             if (searchItem == null)
@@ -374,8 +377,9 @@ namespace SchoolProject.Controllers
 
             if (searchBy == "Gender")
             {
+                var query= studentRepository.GetAllStudents().Where(x => x.Gender.GenderName.ToLower() == searchItem || searchItem == null).ToList();
 
-                return View(studentRepository.GetAllStudents().Where(x => x.Gender.GenderName.ToLower() == searchItem || searchItem == null).ToList());
+                return View(query);
             }
             else if (searchBy == "Level")
             {
@@ -388,7 +392,7 @@ namespace SchoolProject.Controllers
             }
             else 
             {
-                
+ 
                 return View(studentRepository.GetAllStudents().Where(x => searchItem == null || x.Fname.ToLower().StartsWith(searchItem)).ToList());
 
             }
