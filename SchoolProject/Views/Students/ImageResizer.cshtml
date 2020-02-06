@@ -1,0 +1,19 @@
+﻿@model string
+
+@{
+    ViewBag.Title = "Image Resize";
+
+    var photo = ViewBag.Photo;
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-center mt-5">
+                <img src="~/@Model" asp-append-version="true" />
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

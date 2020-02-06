@@ -34,7 +34,9 @@ namespace SchoolProject.Controllers
         public IActionResult Index()
         {
             var courses = coursesRepository.GetAllCourses().ToList();
+            logger.LogInformation("index");
             return View(courses);
+            
         }
 
         [HttpGet]

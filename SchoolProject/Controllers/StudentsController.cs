@@ -11,10 +11,8 @@ using Microsoft.AspNetCore.Hosting;
 using SchoolProject.Data;
 using SchoolProject.Models;
 using SchoolProject.ViewModels;
-using PagedList.Core;
-using PagedList.Core.Mvc;
-using static SchoolProject.Models.SQLStudentRepository;
 using SchoolProject.Models.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace SchoolProject.Controllers
 {
@@ -27,6 +25,7 @@ namespace SchoolProject.Controllers
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly ICoursesRepository coursesRepository;
         private readonly IStudentCourseRepository studentCourseRepository;
+        private readonly ILogger<StudentsController> logger;
 
         public StudentsController(ApplicationDbContext context,
                                   IStudentRepository studentRepository,
@@ -34,7 +33,8 @@ namespace SchoolProject.Controllers
                                   IAddressRepository addressRepository,
                                   IWebHostEnvironment hostingEnvironment,
                                   ICoursesRepository coursesRepository,
-                                  IStudentCourseRepository studentCourseRepository)
+                                  IStudentCourseRepository studentCourseRepository,
+                                  ILogger<StudentsController> logger)
         {
             this.context = context;
             this.studentRepository = studentRepository;
@@ -43,6 +43,7 @@ namespace SchoolProject.Controllers
             this.hostingEnvironment = hostingEnvironment;
             this.coursesRepository = coursesRepository;
             this.studentCourseRepository = studentCourseRepository;
+            this.logger = logger;
         }
 
 
@@ -257,7 +258,7 @@ namespace SchoolProject.Controllers
                 };
 
                 addressRepository.AddAddress(address);
-
+                logger.LogInformation("student added sucessfully");
                 return View("StudentAddSuccess");
             }
 
@@ -362,31 +363,47 @@ namespace SchoolProject.Controllers
         }
 
         [HttpGet]
+        public IActionResult ImageResizer(string photoPath)
+        {
+            string defaultaPath = "images/NoImage.jpg";
+            if (!string.IsNullOrEmpty(photoPath))
+            {
+                return View("ImageResizer", photoPath);
+            }
+            else
+            {
+                return View("ImageResizer", defaultaPath);
+            }
+        }
+
+        [HttpGet]
         public IActionResult Search(string searchBy,string search,int pageNumber = 1)
         {
             ViewBag.searchBy= searchBy;
             ViewBag.search= search;
             string searchItem = search;
-            int pageSize = 2;
+            int pageSize = 3;
+           
             if (searchItem == null)
             {
                 searchItem = search;
             }
             else
             {
-                searchItem = search.ToLower();
+                searchItem = search.ToLower().Trim();
             }
 
             if (searchBy == "Gender")
             {
                 var query= studentRepository.GetAllStudents().Where(x => x.Gender.GenderName.ToLower() == searchItem || searchItem == null).ToList();
+               
                 return View(PaginatedList<Student>.Create(query.AsQueryable<Student>(), pageNumber, pageSize));
+               
             }
             else if (searchBy == "Level")
             {
                 var query = studentRepository.GetAllStudents().Where(x => x.Level.LevelName.ToLower() == searchItem || searchItem == null).ToList();
                 return View(PaginatedList<Student>.Create(query.AsQueryable<Student>(), pageNumber, pageSize));
-
             }
             else if (searchBy == "Department")
             {
