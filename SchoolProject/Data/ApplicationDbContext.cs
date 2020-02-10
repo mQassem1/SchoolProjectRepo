@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolProject.Models;
 
 namespace SchoolProject.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplictionUser>
+    //set idendity Id to int and custome DataBase
+    public class ApplicationDbContext : IdentityDbContext<ApplictionUser, ApplicationRole, int>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

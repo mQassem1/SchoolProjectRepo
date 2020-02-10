@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace SchoolProject.Models
 {
-    public class ApplictionUser:IdentityUser
+    public class ApplictionUser:IdentityUser<int>
     {
         public string Photo { get; set; }
         public string City { get; set; }
+    }
+
+
+    public class Role : IdentityRole<int>
+    {
     }
 }
