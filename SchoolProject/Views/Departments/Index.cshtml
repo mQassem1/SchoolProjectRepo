@@ -19,16 +19,28 @@
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    @foreach (var item in Model)
+                    @if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DepartmentName)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.DepartmentId" class="btn btn-primary">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@item.DepartmentId" class="btn btn-secondary">Details</a>
+                                    <a asp-action="Delete" asp-route-id="@item.DepartmentId" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DepartmentName)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.DepartmentId" class="btn btn-primary">Edit</a>
-                                <a asp-action="Details" asp-route-id="@item.DepartmentId" class="btn btn-secondary">Details</a>
-                                <a asp-action="Delete" asp-route-id="@item.DepartmentId" class="btn btn-danger">Delete</a>
+                            <td colspan="2">
+                                There is no Data
                             </td>
                         </tr>
                     }

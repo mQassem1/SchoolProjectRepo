@@ -117,18 +117,22 @@
                        asp-route-search="@search"
                        class="btn btn-outline-primary @prevDisabled">
                         previous
-                    </a>
-                    @*@for (int i = Model.PageIndex; i < Model.TotalPages; i++)
-        {
 
-                <a asp-action="Search"
-                   asp-route-pageNumber="@(i)"
-                   asp-route-searchBy="@searchBy"
-                   asp-route-search="@search"
-                   class="btn btn-outline-primary">
-                    @i
-                </a>
-        }*@
+                    </a>
+                    <a asp-action="Search"
+                       asp-route-pageNumber="@(1)"
+                       asp-route-searchBy="@searchBy"
+                       asp-route-search="@search"
+                       class="btn btn-outline-primary">
+                        First
+                    </a>
+                    <a asp-action="Search"
+                       asp-route-pageNumber="@(Model.TotalPages)"
+                       asp-route-searchBy="@searchBy"
+                       asp-route-search="@search"
+                       class="btn btn-outline-primary">
+                        Last
+                    </a>
                     <a asp-action="Search"
                        asp-route-pageNumber="@(Model.PageIndex + 1)"
                        asp-route-searchBy="@searchBy"
