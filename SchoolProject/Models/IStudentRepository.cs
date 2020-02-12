@@ -12,6 +12,7 @@ namespace SchoolProject.Models
         Student Create(Student student);
         IEnumerable<Student> GetAllStudents();
         Student GetStudentById(int id);
+        int GetStudentLoginId(int id);
         Student GetStudentByEmail(string email);
         Student DeleteStudent(int id);
         Student UpdateStudent(Student studentChanges);
