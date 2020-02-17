@@ -52,7 +52,7 @@ namespace SchoolProject.Controllers
                 if (result.Succeeded)
                 {
                      logger.LogInformation("Success Login", DateTime.UtcNow);
-                     await emailSender.SendEmailAsync(model.Email, "Login", "Login Sucess");
+                     await emailSender.SendEmailAsync(model.Email, "Login", "Login Success");
                      return LocalRedirect(returnUrl);
                 }
                 else
@@ -62,11 +62,9 @@ namespace SchoolProject.Controllers
                     return View(model);
                 }
             }
-
               return View(model);
         }
 
-        
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();

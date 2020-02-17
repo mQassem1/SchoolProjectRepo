@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace SchoolProject.Controllers
 {
+    [Authorize]
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext context;

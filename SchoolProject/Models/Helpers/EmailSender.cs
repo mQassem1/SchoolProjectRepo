@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 using MimeKit;
 using MailKit.Net.Smtp;
 using System;
@@ -14,11 +15,11 @@ namespace SchoolProject.Models.Helpers
     public class EmailSender : IEmailSender
     {
         private readonly EmailSettings _emailSettings;
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
 
         public EmailSender(
             IOptions<EmailSettings> emailSettings,
-            IHostingEnvironment env)
+            IWebHostEnvironment env)
         {
             _emailSettings = emailSettings.Value;
             _env = env;
