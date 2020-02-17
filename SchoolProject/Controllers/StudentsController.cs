@@ -51,7 +51,6 @@ namespace SchoolProject.Controllers
             this.userManger = userManger;
         }
 
-
         [HttpGet]
         public IActionResult ListStudents()
         {
