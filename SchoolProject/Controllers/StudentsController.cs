@@ -170,8 +170,8 @@ namespace SchoolProject.Controllers
                 else
                 {
                     model.Email = user.Email;
-                    model.Password = user.PasswordHash;
-                    model.ConfirmPassword = user.PasswordHash;
+                    //model.Password = user.PasswordHash;
+                    //model.ConfirmPassword = user.PasswordHash;
                 }
           
                 return View(model);
@@ -181,6 +181,7 @@ namespace SchoolProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(StudentEditViewModel model)
         {
+           
             if (ModelState.IsValid)
             {
                 Student student = studentRepository.GetStudentById(model.StudentId);
@@ -217,23 +218,23 @@ namespace SchoolProject.Controllers
                 {
                     user.Email = model.Email;
                     user.UserName = model.Email;
-
-                    if (user.PasswordHash == null && model.Password != null)
-                    {
-                          user.PasswordHash =  model.Password;
-                    }
-                    else if(user.PasswordHash != null && model.Password == null)
-                    {
-                        user.PasswordHash = user.PasswordHash;
-                    }
-                    else if(user.PasswordHash !=null && model.Password != null)
-                    {
-                        user.PasswordHash = model.Password;
-                    }
-                    else
-                    {
-                        user.PasswordHash = "Default@2030";
-                    }
+                  
+                    //if (user.PasswordHash == null && model.Password != null)
+                    //{
+                    //      user.PasswordHash =  model.Password;
+                    //}
+                    //else if(user.PasswordHash != null && model.Password == null)
+                    //{
+                    //    user.PasswordHash = user.PasswordHash;
+                    //}
+                    //else if(user.PasswordHash !=null && model.Password != null)
+                    //{
+                    //    user.PasswordHash = model.Password;
+                    //}
+                    //else
+                    //{
+                    //    user.PasswordHash = "Default@2030";
+                    //}
 
                     await userManger.UpdateAsync(user);
                 }
@@ -312,7 +313,8 @@ namespace SchoolProject.Controllers
                 };
                  
                 addressRepository.AddAddress(address);
-                
+
+               
                 ApplictionUser user = new ApplictionUser
                 {
                     UserName = model.Email,
@@ -320,10 +322,14 @@ namespace SchoolProject.Controllers
                     StudentId = student.StudentId,
                     PasswordHash = model.Password
                 };
-
+                
                 var result = await userManger.CreateAsync(user);
+                
                 if (result.Succeeded)
                 {
+                    var hasedPassword = userManger.PasswordHasher.HashPassword(user, model.Password);
+                    user.PasswordHash = hasedPassword;
+                    await userManger.UpdateAsync(user);
                     logger.LogInformation("student added sucessfully");
                     return View("StudentAddSuccess");
                 }

@@ -37,14 +37,13 @@ namespace SchoolProject
                    Configuration.GetConnectionString("SchoolConnectionString")));
 
             //adding Idendity with authorization
-            services.AddIdentity<ApplictionUser, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<ApplictionUser, ApplicationRole>(options => 
+                 options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             //idendity login/logout Location
-         
-            //register Email Sender Class
-            services.AddSingleton<IEmailSender,EmailSender>();
+           
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -55,18 +54,18 @@ namespace SchoolProject
                 options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 6;
+                options.Password.RequiredLength = 10;
                 options.Password.RequiredUniqueChars = 1;
 
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.AllowedForNewUsers = false;
 
                 // User settings.
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = false;
+                options.User.RequireUniqueEmail = true;
             });
 
             services.ConfigureApplicationCookie(options =>
@@ -75,12 +74,15 @@ namespace SchoolProject
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-                options.LoginPath = "/Identity/Account/Login";
+                options.LoginPath = "/Account/Login";
+                //options.LoginPath = "/Identity/Account/Login";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 
                 options.SlidingExpiration = true;
             });
 
+            //register Email Sender Class
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddScoped<IStudentRepository, SQLStudentRepository>();
             services.AddScoped<IAddressRepository, SQLAddressRepository>();
             services.AddScoped<ILevelRepository, SQLLevelRepository>();
@@ -88,6 +90,7 @@ namespace SchoolProject
             services.AddScoped<ICoursesRepository, SQLCourseRepository>();
             services.AddScoped<IGenderRepository, SQLGenderRepository>();
             services.AddScoped<IStudentCourseRepository, SQLStudentCourseRepository>();
+            services.AddSingleton<IEmailSender, EmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
