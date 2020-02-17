@@ -36,6 +36,9 @@ namespace SchoolProject.Models
 
         public Address Address { get; set; }
 
+        //idendity relation
+        public virtual ApplictionUser ApplictionUser { get; set; }
+
         public ICollection<StudentCourseRelation> CourseRelation { get; set; }
     }
 }

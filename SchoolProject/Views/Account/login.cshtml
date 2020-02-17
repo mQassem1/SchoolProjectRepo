@@ -1,0 +1,60 @@
+﻿@model LoginViewModel
+@{
+    Layout = null;
+    var ReturnUrl = ViewData["ReturnUrl"];
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <environment include="Development">
+        <link href="~/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/jqueryui/jquery-ui.css" rel="stylesheet" />
+        <script src="~/lib/jquery/jquery.js"></script>
+        <script src="~/lib/jqueryui/jquery-ui.js"></script>
+        <script src="~/twitter-bootstrap/js/bootstrap.js"></script>
+        <script src="~/js/LoginScript.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Fjalla+One|Staatliches&display=swap" rel="stylesheet">
+
+        <link href="~/css/LoginStyle.css" rel="stylesheet" />
+
+    </environment>
+    <environment exclude="Development">
+        <link href="~/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    </environment>
+</head>
+<body>
+    <div class="container">
+        <div class="card card-container">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <img id="profile-img" class="profile-img-card" src="~/images/avatar_2x.png" />
+            <p id="profile-name" class="profile-name-card"></p>
+            <form method="post" asp-action="login" asp-route-ReturnUrl="@ReturnUrl" class="form-signin">
+                <span id="reauth-email" class="reauth-email"></span>
+
+                <input asp-for="Email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                <span asp-validation-for="Email" class="text-danger"></span>
+
+
+                <input asp-for="Password" id="inputPassword" class="form-control" placeholder="Password" required>
+                <span asp-validation-for="Password" class="text-danger"></span>
+
+                <div id="remember" class="checkbox">
+                    <label>
+                        <input asp-for="RemeberMe" type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+            </form>
+            <a href="#" class="forgot-password">
+                Forgot the password?
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

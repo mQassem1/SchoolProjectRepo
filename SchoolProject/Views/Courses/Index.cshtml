@@ -31,27 +31,38 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (Course course in Model)
+                        @if (Model.Any())
                         {
-                            <tr>
-                                <td class="align-content-center">
-                                    @Html.DisplayFor(modelItem => course.CourseId)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => course.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => course.Code)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => course.Hours)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@course.CourseId" class="btn btn-primary btn-sm">Edit</a>
-                                    <a asp-action="Details" asp-route-id="@course.CourseId" class="btn btn-secondary btn-sm">Details</a>
-                                    <a asp-action="Delete" asp-route-id="@course.CourseId" class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
+                            @foreach (Course course in Model)
+                            {
+                                <tr>
+                                    <td class="align-content-center">
+                                        @Html.DisplayFor(modelItem => course.CourseId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => course.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => course.Code)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => course.Hours)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@course.CourseId" class="btn btn-primary btn-sm">Edit</a>
+                                        <a asp-action="Details" asp-route-id="@course.CourseId" class="btn btn-secondary btn-sm">Details</a>
+                                        <a asp-action="Delete" asp-route-id="@course.CourseId" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                           <tr>
+                               <td colspan="5">
+                                   There is no Data
+                               </td>
+                           </tr>
                         }
                     </tbody>
                 </table>

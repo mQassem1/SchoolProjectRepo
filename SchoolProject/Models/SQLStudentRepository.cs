@@ -96,6 +96,7 @@ namespace SchoolProject.Models
                                           .Include(x => x.Address)
                                           .Include(x=>x.Gender)
                                           .Include(x=>x.CourseRelation)
+                                          .Include(x=>x.ApplictionUser)
                                           .FirstOrDefault(x => x.StudentId == id);
 
             return student;
@@ -112,6 +113,14 @@ namespace SchoolProject.Models
         public bool IsSudentExist(int id)
         {
             return context.Students.Any(x => x.StudentId == id);
+        }
+
+        public int GetStudentLoginId(int id)
+        {
+            var x = context.Students.Where(x => x.StudentId == id)
+                                    .Select(x => x.ApplictionUser.Id)
+                                    .FirstOrDefault();
+            return x;
         }
     }
 }

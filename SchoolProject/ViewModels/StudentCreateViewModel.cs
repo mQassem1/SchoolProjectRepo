@@ -19,16 +19,29 @@ namespace SchoolProject.ViewModels
         [Display(Name = "Last Name")]
         public string Lname { get; set; }
 
+        
         [Required,EmailAddress(ErrorMessage ="Invalid Email Format")]
         [Display(Name = "Email Address")]
         public string Email { get; set; }
 
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Compare("Password",ErrorMessage ="password must match")]
+        public string ConfirmPassword { get; set; }
+
+        [Required]
         [Display(Name = "Department")]
         public int DepartmentId { get; set; }
 
+        [Required]
         [Display(Name = "Gender")]
         public int GenderId { get; set; }
 
+        [Required]
         [Display(Name = "Level")]
         public int LevelId { get; set; }
 
@@ -41,6 +54,8 @@ namespace SchoolProject.ViewModels
         public string City { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
+
+        [Display(Name = "Zipp Code")]
         public int ZippCode { get; set; }
 
 

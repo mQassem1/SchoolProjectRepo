@@ -10,6 +10,8 @@ namespace SchoolProject.ViewModels
     public class StudentEditViewModel:StudentCreateViewModel
     {
         public int StudentId { get; set; }
+        public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
         public string ExistingPhotoPath { get; set; }
 
     }

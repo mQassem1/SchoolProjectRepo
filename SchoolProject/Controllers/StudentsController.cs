@@ -13,9 +13,11 @@ using SchoolProject.Models;
 using SchoolProject.ViewModels;
 using SchoolProject.Models.Helpers;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
 
 namespace SchoolProject.Controllers
 {
+    [Authorize]
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -26,6 +28,7 @@ namespace SchoolProject.Controllers
         private readonly ICoursesRepository coursesRepository;
         private readonly IStudentCourseRepository studentCourseRepository;
         private readonly ILogger<StudentsController> logger;
+        private readonly UserManager<ApplictionUser> userManger;
 
         public StudentsController(ApplicationDbContext context,
                                   IStudentRepository studentRepository,
@@ -34,7 +37,8 @@ namespace SchoolProject.Controllers
                                   IWebHostEnvironment hostingEnvironment,
                                   ICoursesRepository coursesRepository,
                                   IStudentCourseRepository studentCourseRepository,
-                                  ILogger<StudentsController> logger)
+                                  ILogger<StudentsController> logger,
+                                  UserManager<ApplictionUser> userManger)
         {
             this.context = context;
             this.studentRepository = studentRepository;
@@ -44,6 +48,7 @@ namespace SchoolProject.Controllers
             this.coursesRepository = coursesRepository;
             this.studentCourseRepository = studentCourseRepository;
             this.logger = logger;
+            this.userManger = userManger;
         }
 
 
@@ -125,7 +130,7 @@ namespace SchoolProject.Controllers
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
                 ViewBag.DepartmentId = new SelectList(context.Departments, "DepartmentId", "DepartmentName").ToList();
                 ViewBag.LevelId = new SelectList(context.Levels, "LevelId", "LevelName").ToList();
@@ -155,12 +160,29 @@ namespace SchoolProject.Controllers
                     ZippCode = student.Address.ZippCode
                 };
 
+                var loginId = studentRepository.GetStudentLoginId(id);
+
+                var user = await userManger.FindByIdAsync(loginId.ToString());
+                if (user == null)
+                {
+                    logger.LogError("User Is Null Edit");
+                    return View("NotFound");
+                }
+                else
+                {
+                    model.Email = user.Email;
+                    //model.Password = user.PasswordHash;
+                    //model.ConfirmPassword = user.PasswordHash;
+                }
+          
                 return View(model);
         }
 
         [HttpPost]
-        public IActionResult Edit(StudentEditViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(StudentEditViewModel model)
         {
+           
             if (ModelState.IsValid)
             {
                 Student student = studentRepository.GetStudentById(model.StudentId);
@@ -183,6 +205,40 @@ namespace SchoolProject.Controllers
                 student.Address.StudentId = model.StudentId;
                 student.Address.State = model.State;
                 student.Address.ZippCode = model.ZippCode;
+
+                var loginId = studentRepository.GetStudentLoginId(model.StudentId);
+
+                var user = await userManger.FindByIdAsync(loginId.ToString());
+                if (user == null)
+                {
+                    logger.LogError("User not found edit");
+                    return View("NotFound");
+                  
+                }
+                else
+                {
+                    user.Email = model.Email;
+                    user.UserName = model.Email;
+                  
+                    //if (user.PasswordHash == null && model.Password != null)
+                    //{
+                    //      user.PasswordHash =  model.Password;
+                    //}
+                    //else if(user.PasswordHash != null && model.Password == null)
+                    //{
+                    //    user.PasswordHash = user.PasswordHash;
+                    //}
+                    //else if(user.PasswordHash !=null && model.Password != null)
+                    //{
+                    //    user.PasswordHash = model.Password;
+                    //}
+                    //else
+                    //{
+                    //    user.PasswordHash = "Default@2030";
+                    //}
+
+                    await userManger.UpdateAsync(user);
+                }
 
                 if (model.PhotoPath != null)
                 {
@@ -225,12 +281,12 @@ namespace SchoolProject.Controllers
 
 
        [HttpPost]
-       public IActionResult Create(StudentCreateViewModel model)
+       public async Task<IActionResult> Create(StudentCreateViewModel model)
        {
             if (ModelState.IsValid)
             {
                 string uniqueFileName = ProcessUploadedFile(model);
-
+                
                 Student student = new Student
                 {
                     Fname = model.Fname,
@@ -256,10 +312,35 @@ namespace SchoolProject.Controllers
                     Country = model.Country,
                     ZippCode = model.ZippCode
                 };
-
+                 
                 addressRepository.AddAddress(address);
-                logger.LogInformation("student added sucessfully");
-                return View("StudentAddSuccess");
+
+               
+                ApplictionUser user = new ApplictionUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    StudentId = student.StudentId,
+                    PasswordHash = model.Password
+                };
+                
+                var result = await userManger.CreateAsync(user);
+                
+                if (result.Succeeded)
+                {
+                    var hasedPassword = userManger.PasswordHasher.HashPassword(user, model.Password);
+                    user.PasswordHash = hasedPassword;
+                    await userManger.UpdateAsync(user);
+                    logger.LogInformation("student added sucessfully");
+                    return View("StudentAddSuccess");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
             }
 
             return View(model);

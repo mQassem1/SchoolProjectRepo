@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<ApplictionUser> signInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -72,26 +74,36 @@
                         </div>
                     </li>
                     @*<li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Administration
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" asp-controller="Administration" asp-action="Create">Create</a>
-                                <a class="dropdown-item" asp-controller="Administration" asp-action="Edit">Edit</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" asp-controller="Administration" asp-action="Search">Search</a>
-                                <a class="dropdown-item" asp-controller="Administration" asp-action="Search">Delete</a>
-                            </div>
-                        </li>*@
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Administration
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" asp-controller="Administration" asp-action="Create">Create</a>
+                    <a class="dropdown-item" asp-controller="Administration" asp-action="Edit">Edit</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" asp-controller="Administration" asp-action="Search">Search</a>
+                    <a class="dropdown-item" asp-controller="Administration" asp-action="Search">Delete</a>
+                </div>
+            </li>*@
                 </ul>
+                
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Account" asp-action="Register">Register </a>
-                    </li>
+
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Logout">Logout @User.Identity.Name</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                        </li>
+                    }
                 </ul>
+                
+
             </div>
         </nav>
     </header>
