@@ -82,6 +82,7 @@ namespace SchoolProject
             });
 
             //register Email Sender Class
+            services.Configure<SMSSettings>(Configuration.GetSection("SMSSettings"));
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddScoped<IStudentRepository, SQLStudentRepository>();
             services.AddScoped<IAddressRepository, SQLAddressRepository>();
@@ -91,6 +92,7 @@ namespace SchoolProject
             services.AddScoped<IGenderRepository, SQLGenderRepository>();
             services.AddScoped<IStudentCourseRepository, SQLStudentCourseRepository>();
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddSingleton<ISendSMS, SendSMS>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

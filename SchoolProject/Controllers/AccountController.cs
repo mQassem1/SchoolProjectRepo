@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SchoolProject.Data;
 using SchoolProject.Models;
+using SchoolProject.Models.Helpers;
 using SchoolProject.ViewModels;
 
 namespace SchoolProject.Controllers
@@ -20,17 +21,20 @@ namespace SchoolProject.Controllers
         private readonly SignInManager<ApplictionUser> signInManager;
         private readonly ILogger<AccountController> logger;
         private readonly IEmailSender emailSender;
+        private readonly ISendSMS sendSMS;
 
         public AccountController(UserManager<ApplictionUser> userManger,
                                  SignInManager<ApplictionUser> signInManager,
                                  ILogger<AccountController> logger,
-                                 IEmailSender emailSender)
+                                 IEmailSender emailSender,
+                                 ISendSMS sendSMS)
                                 
         {
             this.userManger = userManger;
             this.signInManager = signInManager;
             this.logger = logger;
             this.emailSender = emailSender;
+            this.sendSMS = sendSMS;
         }
         
         [HttpGet]
@@ -51,9 +55,10 @@ namespace SchoolProject.Controllers
                 var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RemeberMe, false);
                 if (result.Succeeded)
                 {
-                     logger.LogInformation("Success Login", DateTime.UtcNow);
-                     await emailSender.SendEmailAsync(model.Email, "Login", "Login Success");
-                     return LocalRedirect(returnUrl);
+                    logger.LogInformation("Success Login", DateTime.UtcNow);
+                    await emailSender.SendEmailAsync(model.Email, "Login", "Login Success");
+                    sendSMS.SendSMSMessage("00966533112780","Hello") ;
+                    return LocalRedirect(returnUrl);
                 }
                 else
                 {
