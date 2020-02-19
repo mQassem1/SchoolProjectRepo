@@ -15,6 +15,12 @@ namespace SchoolProject.ViewModels
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Required]
+        public string Token { get; set; }
+
+        [Display(Name ="remember me")]
         public bool RemeberMe { get; set; }
+
     }
 }

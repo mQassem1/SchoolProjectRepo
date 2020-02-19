@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,7 +17,8 @@ namespace SchoolProject.Models.Helpers
         private readonly IConfiguration config;
         private readonly SMSSettings smsSettings;
         public string result;
-        public SendSMS(IConfiguration config, IOptions<SMSSettings> smsSettings)
+        public SendSMS(IConfiguration config,
+                       IOptions<SMSSettings> smsSettings)
         {
             this.config = config;
             this.smsSettings = smsSettings.Value;
@@ -26,11 +28,11 @@ namespace SchoolProject.Models.Helpers
         public string SendSMSMessage(string number,string messag)
         {
             var apiKey = smsSettings.ApiKey;
-            var sender = smsSettings.Sender;
-            var message = messag;
-            var numbers = number;
-
-            string url = "https://api.txtlocal.com/send/?apikey=" + apiKey + "&numbers=" + numbers + "&message=" + message + "&sender=" + sender;
+            string sender = smsSettings.Sender;
+            string message = messag;
+            string numbers = number;
+           
+            string url = smsSettings.Url + apiKey + "&numbers=" + numbers + "&message=" + message + "&sender=" + sender;
 
             StreamWriter myWriter = null;
             HttpWebRequest objRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -62,13 +64,11 @@ namespace SchoolProject.Models.Helpers
             return result;
         }
     }
-        
-       
+
     public class SMSSettings
     {
-        
         public  string ApiKey { get; set; }
         public string Sender { get; set; }
-        
+        public string Url { get; set; }
     }
 }

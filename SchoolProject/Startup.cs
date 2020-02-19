@@ -81,18 +81,25 @@ namespace SchoolProject
                 options.SlidingExpiration = true;
             });
 
-            //register Email Sender Class
-            services.Configure<SMSSettings>(Configuration.GetSection("SMSSettings"));
+            services.AddScoped<IStudentRepository,SQLStudentRepository>();
+            services.AddScoped<IAddressRepository,SQLAddressRepository>();
+            services.AddScoped<ILevelRepository,SQLLevelRepository>();
+            services.AddScoped<IDepartmentRepository,SQLDepartmentRepository>();
+            services.AddScoped<ICoursesRepository,SQLCourseRepository>();
+            services.AddScoped<IGenderRepository,SQLGenderRepository>();
+            services.AddScoped<IStudentCourseRepository,SQLStudentCourseRepository>();
+
+            //Email Settings
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
-            services.AddScoped<IStudentRepository, SQLStudentRepository>();
-            services.AddScoped<IAddressRepository, SQLAddressRepository>();
-            services.AddScoped<ILevelRepository, SQLLevelRepository>();
-            services.AddScoped<IDepartmentRepository, SQLDepartmentRepository>();
-            services.AddScoped<ICoursesRepository, SQLCourseRepository>();
-            services.AddScoped<IGenderRepository, SQLGenderRepository>();
-            services.AddScoped<IStudentCourseRepository, SQLStudentCourseRepository>();
             services.AddSingleton<IEmailSender, EmailSender>();
+
+            //SMS Settings
+            services.Configure<SMSSettings>(Configuration.GetSection("SMSSettings"));
             services.AddSingleton<ISendSMS, SendSMS>();
+
+            //Google ReCAPTCHA
+            services.Configure<ReCAPTCHASettings>(Configuration.GetSection("GoogleReCAPTCHA"));
+            services.AddTransient<GoogleReCAPTCHAService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

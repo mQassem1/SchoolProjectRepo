@@ -20,12 +20,14 @@ namespace SchoolProject.Controllers
         private readonly UserManager<ApplictionUser> userManger;
         private readonly SignInManager<ApplictionUser> signInManager;
         private readonly ILogger<AccountController> logger;
+        private readonly GoogleReCAPTCHAService googleReCAPTCHAService;
         private readonly IEmailSender emailSender;
         private readonly ISendSMS sendSMS;
 
         public AccountController(UserManager<ApplictionUser> userManger,
                                  SignInManager<ApplictionUser> signInManager,
                                  ILogger<AccountController> logger,
+                                 GoogleReCAPTCHAService googleReCAPTCHAService,
                                  IEmailSender emailSender,
                                  ISendSMS sendSMS)
                                 
@@ -33,6 +35,7 @@ namespace SchoolProject.Controllers
             this.userManger = userManger;
             this.signInManager = signInManager;
             this.logger = logger;
+            this.googleReCAPTCHAService = googleReCAPTCHAService;
             this.emailSender = emailSender;
             this.sendSMS = sendSMS;
         }
@@ -50,8 +53,17 @@ namespace SchoolProject.Controllers
         {
            var returnUrl = ReturnUrl ?? Url.Content("~/");
 
+
+            //Token verification
+            var ReCAPTCHA = googleReCAPTCHAService.ResponseVerification(model.Token);
+
             if (ModelState.IsValid)
             {
+                if (!ReCAPTCHA.Result.success && ReCAPTCHA.Result.score <= 0.5)
+                {
+                    ModelState.AddModelError(string.Empty, "You are Not Human");
+                    return View(model);
+                }
                 var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RemeberMe, false);
                 if (result.Succeeded)
                 {

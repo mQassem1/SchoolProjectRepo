@@ -10,8 +10,8 @@ namespace SchoolProject.ViewModels
     public class StudentEditViewModel:StudentCreateViewModel
     {
         public int StudentId { get; set; }
-        public string Password { get; set; }
-        public string ConfirmPassword { get; set; }
+        public new string  Password { get; set; } //to override parent variable
+        public new string ConfirmPassword { get; set; }
         public string ExistingPhotoPath { get; set; }
 
     }
