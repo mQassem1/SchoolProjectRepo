@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolProject.Data;
 
 namespace SchoolProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200220144737_inializeDb")]
+    partial class inializeDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,16 +277,13 @@ namespace SchoolProject.Migrations
                     b.Property<int>("Hours")
                         .HasColumnType("int");
 
-                    b.Property<int>("LevelId")
+                    b.Property<int>("Level")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CourseId");
-
-                    b.HasIndex("LevelId")
-                        .IsUnique();
 
                     b.ToTable("Courses");
                 });
@@ -456,15 +455,6 @@ namespace SchoolProject.Migrations
                     b.HasOne("SchoolProject.Models.Student", "Student")
                         .WithOne("ApplictionUser")
                         .HasForeignKey("SchoolProject.Models.ApplictionUser", "StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SchoolProject.Models.Course", b =>
-                {
-                    b.HasOne("SchoolProject.Models.Level", "Level")
-                        .WithOne("Course")
-                        .HasForeignKey("SchoolProject.Models.Course", "LevelId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

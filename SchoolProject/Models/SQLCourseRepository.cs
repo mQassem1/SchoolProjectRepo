@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SchoolProject.Data;
 using System;
 using System.Collections.Generic;
@@ -46,12 +47,13 @@ namespace SchoolProject.Models
 
         public IEnumerable<Course> GetAllCourses()
         {
-            return context.Courses.ToList();
+            return context.Courses.Include(x => x.Level).ToList();
         }
 
         public Course GetCourse(int id)
         {
-            return context.Courses.Find(id);
+            return context.Courses.Include(x => x.Level)
+                                  .FirstOrDefault(x => x.CourseId == id);
         }
 
         public Course UpdateCourse(Course changedCourse)

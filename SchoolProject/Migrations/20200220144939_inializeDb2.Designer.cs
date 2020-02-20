@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolProject.Data;
 
 namespace SchoolProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200220144939_inializeDb2")]
+    partial class inializeDb2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,16 +277,13 @@ namespace SchoolProject.Migrations
                     b.Property<int>("Hours")
                         .HasColumnType("int");
 
-                    b.Property<int>("LevelId")
+                    b.Property<int>("Level")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CourseId");
-
-                    b.HasIndex("LevelId")
-                        .IsUnique();
 
                     b.ToTable("Courses");
                 });
@@ -326,10 +325,15 @@ namespace SchoolProject.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LevelName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("LevelId");
+
+                    b.HasIndex("CourseId");
 
                     b.ToTable("Levels");
                 });
@@ -460,13 +464,12 @@ namespace SchoolProject.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SchoolProject.Models.Course", b =>
+            modelBuilder.Entity("SchoolProject.Models.Level", b =>
                 {
-                    b.HasOne("SchoolProject.Models.Level", "Level")
-                        .WithOne("Course")
-                        .HasForeignKey("SchoolProject.Models.Course", "LevelId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("SchoolProject.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("SchoolProject.Models.Student", b =>

@@ -62,11 +62,12 @@ namespace SchoolProject.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.LevelId = new SelectList(context.Levels, "LevelId", "LevelName").ToList();
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(CreateCourseViewModel model)
+        public IActionResult Create(Course model)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +75,8 @@ namespace SchoolProject.Controllers
                 {
                     Name = model.Name,
                     Code = model.Code,
-                    Hours = model.Hours
+                    Hours = model.Hours,
+                    LevelId = model.LevelId
                 };
 
                 coursesRepository.AddCourse(course);
@@ -87,6 +89,8 @@ namespace SchoolProject.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
+            ViewBag.LevelId = new SelectList(context.Levels, "LevelId", "LevelName").ToList();
+
             if (id == null)
             {
                 return View("CourseNotFound");
@@ -99,12 +103,13 @@ namespace SchoolProject.Controllers
                 return View("CourseNotFound");
             }
 
-            EditCourseViewModel model = new EditCourseViewModel
+            Course model = new Course
             {
                 CourseId = course.CourseId,
                 Name = course.Name,
                 Code = course.Code,
-                Hours = course.Hours
+                Hours = course.Hours,
+                LevelId = course.Level.LevelId
             };
 
             return View(model);
@@ -112,7 +117,7 @@ namespace SchoolProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(EditCourseViewModel model)
+        public IActionResult Edit(Course model)
         {
             if (ModelState.IsValid)
             {
@@ -127,6 +132,7 @@ namespace SchoolProject.Controllers
                 course.Name = model.Name;
                 course.Code = model.Code;
                 course.Hours = model.Hours;
+                course.LevelId = model.LevelId;
 
                 coursesRepository.UpdateCourse(course);
                 return RedirectToAction("index");

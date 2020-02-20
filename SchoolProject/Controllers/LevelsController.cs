@@ -62,7 +62,7 @@ namespace SchoolProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateLevelViewModel model)
+        public IActionResult Create(Level model)
         {
             if (ModelState.IsValid)
             {
@@ -95,9 +95,9 @@ namespace SchoolProject.Controllers
                 return View("LevelNotFound");
             }
 
-            LevelEditViewModel model = new LevelEditViewModel
+            Level model = new Level
             {
-                LevelId=level.LevelId,
+                LevelId = level.LevelId,
                 LevelName = level.LevelName
             };
 
@@ -105,7 +105,7 @@ namespace SchoolProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(LevelEditViewModel model)
+        public IActionResult Edit(Level model)
         {
             if (ModelState.IsValid)
             {
