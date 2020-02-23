@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -28,6 +29,12 @@ namespace SchoolProject.Data
         {
             //using fluent Api To crate composite key
             builder.Entity<StudentCourseRelation>().HasKey("StudentId","CourseId");
+
+                       //to privent cyclic error  
+            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
 
             base.OnModelCreating(builder);
         }

@@ -16,14 +16,15 @@ namespace SchoolProject.Controllers
     [Authorize]
     public class DepartmentsController : Controller
     {
-        private readonly ApplicationDbContext context;
+        
         private readonly IDepartmentRepository departmentRepository;
         private readonly ILogger<DepartmentsController> logger;
 
-        public DepartmentsController(ApplicationDbContext context,
-                                     IDepartmentRepository departmentRepository,ILogger<DepartmentsController> logger)
+        public DepartmentsController(IDepartmentRepository departmentRepository,
+                                     ILogger<DepartmentsController> logger)
+
         {
-            this.context = context;
+           
             this.departmentRepository = departmentRepository;
             this.logger = logger;
         }
@@ -59,7 +60,7 @@ namespace SchoolProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateDepartmentViewModel model)
+        public IActionResult Create(Department model)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +90,7 @@ namespace SchoolProject.Controllers
                 return View("DepartmentNotFound");
             }
 
-            DepartmentEditViewModel model = new DepartmentEditViewModel
+            Department model = new Department
             {
                 DepartmentId = department.DepartmentId,
                 DepartmentName = department.DepartmentName
@@ -100,7 +101,7 @@ namespace SchoolProject.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(DepartmentEditViewModel model)
+        public IActionResult Edit(Department model)
         {
             if (ModelState.IsValid)
             {

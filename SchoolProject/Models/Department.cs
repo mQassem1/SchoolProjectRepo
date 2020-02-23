@@ -12,6 +12,7 @@ namespace SchoolProject.Models
         [Display(Name ="Department Id")]
         public int DepartmentId { get; set; }
 
+        [Required]
         [Display(Name = "Department Name")]
         public string DepartmentName { get; set; }
 

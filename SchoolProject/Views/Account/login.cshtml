@@ -1,11 +1,12 @@
 ﻿@model LoginViewModel
+@using Microsoft.Extensions.Options;
+@inject IOptions<ReCAPTCHASettings> reCAPTCHASettings;
+@inject GoogleReCAPTCHAService googleReCAPTCHAService;
 @{
     Layout = null;
     var ReturnUrl = ViewData["ReturnUrl"];
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta charset="utf-8" />
@@ -18,6 +19,7 @@
         <script src="~/lib/jqueryui/jquery-ui.js"></script>
         <script src="~/twitter-bootstrap/js/bootstrap.js"></script>
         <script src="~/js/LoginScript.js"></script>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
         <link href="https://fonts.googleapis.com/css?family=Fjalla+One|Staatliches&display=swap" rel="stylesheet">
 
         <link href="~/css/LoginStyle.css" rel="stylesheet" />
@@ -33,6 +35,7 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <img id="profile-img" class="profile-img-card" src="~/images/avatar_2x.png" />
             <p id="profile-name" class="profile-name-card"></p>
+
             <form method="post" asp-action="login" asp-route-ReturnUrl="@ReturnUrl" class="form-signin">
                 <span id="reauth-email" class="reauth-email"></span>
 
@@ -43,9 +46,14 @@
                 <input asp-for="Password" id="inputPassword" class="form-control" placeholder="Password" required>
                 <span asp-validation-for="Password" class="text-danger"></span>
 
+
+
+                <input asp-for="Token" id="ReCAPTCHA" class="form-control" type="hidden"/>
+
+
                 <div id="remember" class="checkbox">
                     <label>
-                        <input asp-for="RemeberMe" type="checkbox" value="remember-me"> Remember me
+                        <input asp-for="RemeberMe" type="checkbox" /> Remember me
                     </label>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
@@ -55,6 +63,19 @@
             </a>
         </div>
     </div>
+
+
+        <script src="https://www.google.com/recaptcha/api.js?render=@reCAPTCHASettings.Value.ReCAPTCHA_Site_Key"></script>
+        <script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('@reCAPTCHASettings.Value.ReCAPTCHA_Site_Key', { action: 'homepage' }).then(function (token) {
+
+                $("#ReCAPTCHA").val(token);
+            });
+        });
+        </script>
+ 
+
 
 </body>
 </html>
